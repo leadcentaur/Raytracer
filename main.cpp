@@ -6,6 +6,7 @@
 #include "features/operations.h"
 #include "features/display.h"
 #include "features/color.h"
+#include "matrix.h"
 #include <Windows.h>
 #include <thread>
 
@@ -50,39 +51,39 @@ int Display::initDisplay() {
         return 1;
     }
 
-    Projectile* projectile = new Projectile;
-    Environment* environment = new Environment;
+    //create a new matrix
+
+   std::vector<vector<int>> v1 = {
+        {1,2,1},
+        {0,1,0},
+        {2,3,4}
+    };
+
+    vector<vector<int>> v2 = {
+        {2,5,1},
+        {6,7,1},
+        {1,8,1}
+    };
+
+    vector<vector<int>> v3 = {
+        {0,0,0},
+        {0,0,0},
+        {0,0,0}
+    };
+
+    std::cout << v1[0,0];
+
+    // for (int i = 0; i < 3; i++){ 
+    //     for (int j = 0; j < 3; j++) {
+    //         v3[i, 0] = v2[j, 0] + v1[0, j];
+    //         v3[i, 1] = v2[j, 0] * v2[0, j];
+    //         v2[i, 2] = v2[j, 0] * v2[0, j];
+    //     }
+    // }
 
 
-    //projectile->point = new Vector(0.0, 1, 0.0);
-    projectile->point = new Vector(0, 550, 0.0);
-
-    //needed to flip the y value from postivie to ngative
-    projectile->velocity = new Vector(11.5, -9.6, 0);
-    *projectile->velocity * 51.25; 
-
-    environment->gravity = new Vector(0, 0.25, 0);
-    environment->wind = new Vector(-0.01, 0, 0);
-
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
-
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderDrawPoint(renderer, 1, 550);
-
-    for (int x = 0; x <= 300; x++) {
-        Projectile* pa = tick(environment, projectile);
-        cout << "(" << int(pa->point->x) << ", " << int(pa->point->y) << ")" << "\n";
-        SDL_RenderDrawPoint(renderer,int(pa->point->x) , int(pa->point->y));
-        if (pa->point->y >= 550) {
-            break;
-        } 
-    }
-
-    SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
-    SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
-    SDL_SaveBMP(sshot, "screenshot.bmp");
-    SDL_FreeSurface(sshot);
+    //addition case
+    
 
     //     // <-- Render the Graphics here -->
     return 0;

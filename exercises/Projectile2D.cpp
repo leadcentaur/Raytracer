@@ -22,6 +22,7 @@ struct Environment {
     Vector* wind;
 };
 
+//tick function used to calculate state of projectile
 Projectile* tick(Environment* env, Projectile* proj) {
     *proj->point = *proj->point + *proj->velocity;
     *proj->velocity = *proj->velocity + *env->gravity + *env->wind;
@@ -31,7 +32,7 @@ Projectile* tick(Environment* env, Projectile* proj) {
 
 int Display::initDisplay() {
 
-    // Initialize rendering
+    // Initialize rendering with error handling
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
         printf("Error: SDL failed to initialize\nSDL Error: '%s'\n", SDL_GetError());
         std::cout << "Starting sdlc";

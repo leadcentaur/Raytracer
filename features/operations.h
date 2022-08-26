@@ -19,17 +19,28 @@ class Vector {
 
         Vector(float px=0.0, float py=0.0, float pz=0.0, float pw=0.0) : x(px), y(py), z(pz), w(pw)  {}
         
-        bool equal(float a, float b){return fabs(a - b) < EPSILON;}
+        bool equal(float a, float b) {return fabs(a - b) < EPSILON;}
 
-        float dot(const Vector& a) { return this->x * a.x + this->y * a.y + this->z * a.z + this->w * a.w; }
+        float dot(const Vector& a) 
+        { 
+            return this->x * a.x + this->y * a.y + this->z * a.z + this->w * a.w; 
+        }
 
-        inline void normalize() { float ivm = 1 / this->magnitude(); this->x*ivm; this->y*ivm; this->z*ivm; this->w*ivm; }
+        inline void normalize() 
+        { 
+            float ivm = 1 / this->magnitude(); 
+            this->x*ivm; this->y*ivm; this->z*ivm; this->w*ivm; 
+        }
 
-        inline void cross() { float ivm = 1 / this->magnitude(); this->x*ivm; this->y*ivm; this->z*ivm; this->w*ivm; }
+        inline void cross() 
+        { 
+            float ivm = 1 / this->magnitude(); this->x*ivm; this->y*ivm; this->z*ivm; this->w*ivm; 
+        }
 
         inline void toInt();
-
         void print() const;
+
+        //arithmetic operations vectors
         Vector& operator=(const Vector& a);
         Vector& operator+=(const Vector& a);
         Vector& operator-=(const Vector& a);

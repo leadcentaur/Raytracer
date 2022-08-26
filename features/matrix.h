@@ -6,20 +6,30 @@
 #include <chrono>
 #include <algorithm>
 #include <functional> 
+#include "exceptions.h"
 
-template< typename T, 
-typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
 class Matrix {
-    private:
-        size_t rows;
-        size_t columns;
-        vector<T> data;
+    public:
+        int mRows;
+        int mCols;
+        std::vector<vector<int>> data;
 
-        Matrix& Matrix(size_t rs, size_t, cs, const Vector<T> &d) : rows(rs), columns(cs) data(data) {
-            if (data.size() != rows.col)
-                throw invalid_argument("Matrix provided must have equal dimensions")
+        Matrix(int rows, int columns, const std::vector<vector<int>> &vec) : mRows(rows), mCols(columns), data(vec) {
+            if (mRows != mCols) { throw invalidMatrixException("The dimensions of the matrix specified are not equal.");}
         }
 
-        Matrix operator+(const &Matrix m) const;
-        Matrix operatior*(const &Matrix m) const;
+        bool validateMatrix();
+        Matrix operator+(const Matrix &m) const ;
+        Matrix operator*(const Matrix &m) const;
+        Matrix& Transpose();
+        Matrix& Inverse();
 };
+
+Matrix Matrix::operator+(const Matrix &m) const {
+    ;
+}
+
+Matrix Matrix::operator*(const Matrix &m) const {
+    ;
+}
+
