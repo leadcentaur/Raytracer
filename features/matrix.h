@@ -6,7 +6,6 @@
 #include <chrono>
 #include <algorithm>
 #include <functional> 
-#include "exceptions.h"
 
 class Matrix {
     public:
@@ -15,21 +14,13 @@ class Matrix {
         std::vector<vector<int>> data;
 
         Matrix(int rows, int columns, const std::vector<vector<int>> &vec) : mRows(rows), mCols(columns), data(vec) {
-            if (mRows != mCols) { throw invalidMatrixException("The dimensions of the matrix specified are not equal.");}
+            if (mRows != mCols) { throw invalid_argument("The dimensions of the matrix specified are not equal.");}
         }
 
         bool validateMatrix();
-        Matrix operator+(const Matrix &m) const ;
+        Matrix operator+(const Matrix &m) const;
         Matrix operator*(const Matrix &m) const;
         Matrix& Transpose();
         Matrix& Inverse();
 };
-
-Matrix Matrix::operator+(const Matrix &m) const {
-    ;
-}
-
-Matrix Matrix::operator*(const Matrix &m) const {
-    ;
-}
 

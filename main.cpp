@@ -6,9 +6,8 @@
 #include "features/operations.h"
 #include "features/display.h"
 #include "features/color.h"
-#include "matrix.h"
+#include "features/matrix.h"
 #include <Windows.h>
-#include <thread>
 
 #define SCREEN_WIDTH 900
 #define SCREEN_HEIGHT 550
@@ -53,16 +52,17 @@ int Display::initDisplay() {
 
     //create a new matrix
 
-   std::vector<vector<int>> v1 = {
-        {1,2,1},
-        {0,1,0},
-        {2,3,4}
-    };
-
     vector<vector<int>> v2 = {
         {2,5,1},
         {6,7,1},
         {1,8,1}
+    };
+
+    
+   std::vector<vector<int>> v1 = {
+        {1,2,1},
+        {0,1,0},
+        {2,3,4}
     };
 
     vector<vector<int>> v3 = {
@@ -71,21 +71,17 @@ int Display::initDisplay() {
         {0,0,0}
     };
 
-    std::cout << v1[0,0];
+    for (int i = 0; i < 3; i++){ 
+        for (int j = 0; j < 3; j++) {
+            v3[i][j] = (v1[0][0] * v2[0][0]) + (v1[0][1] * v2[1][0]) + (v1[0][2] * v2[2][0]);
+        }
+    }
 
-    // for (int i = 0; i < 3; i++){ 
-    //     for (int j = 0; j < 3; j++) {
-    //         v3[i, 0] = v2[j, 0] + v1[0, j];
-    //         v3[i, 1] = v2[j, 0] * v2[0, j];
-    //         v2[i, 2] = v2[j, 0] * v2[0, j];
-    //     }
-    // }
+    cout << v3[0][0] << ' ' << v3[0][1] << ' ' << v3[0][2] << '\n';
+    cout << v3[1][0] << ' ' << v3[1][1] << ' ' << v3[1][2] << '\n';
+    cout << v3[2][0] << ' ' << v3[2][1] << ' ' << v3[2][2] << '\n';
 
 
-    //addition case
-    
-
-    //     // <-- Render the Graphics here -->
     return 0;
 }
 
