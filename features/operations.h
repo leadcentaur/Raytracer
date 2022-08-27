@@ -25,7 +25,7 @@ class Vector {
         { 
             return this->x * a.x + this->y * a.y + this->z * a.z + this->w * a.w; 
         }
-
+        
         inline void normalize() 
         { 
             float ivm = 1 / this->magnitude(); 

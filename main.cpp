@@ -12,7 +12,6 @@
 #define SCREEN_WIDTH 900
 #define SCREEN_HEIGHT 550
 
-
 struct Projectile {
     Vector* point;
     Vector* velocity;
@@ -52,40 +51,59 @@ int Display::initDisplay() {
 
     //create a new matrix
 
-    vector<vector<int>> v2 = {
+    vector<vector<int>> a = {
         {2,5,1},
         {6,7,1},
         {1,8,1}
     };
 
+    return 0;
+}
+
+template <class T>
+std::vector <std::vector<T>> MultiplyM(std::vector <std::vector<T>> &a, std::vector <std::vector<T>> &b)
+{
+    const int n = a.size();     // a rows
+    const int m = a[0].size();  // a cols
+    const int p = b[0].size();  // b cols
+
+    std::vector <std::vector<T>> c(n, std::vector<T>(p, 0));
+    for (auto j = 0; j < p; ++j)
+    {
+        for (auto k = 0; k < m; ++k)
+        {
+            for (auto i = 0; i < n; ++i)
+            {
+                c[i][j] += a[i][k] * b[k][j];
+            }
+        }
+    }
+    return c;
+}
+
+int main(int argc, char** argv){
     
-   std::vector<vector<int>> v1 = {
+    vector<vector<int>> a = {
+        {2,5,1},
+        {6,7,1},
+        {1,8,1}
+    };
+   std::vector<vector<int>> b = {
         {1,2,1},
         {0,1,0},
         {2,3,4}
     };
 
-    vector<vector<int>> v3 = {
-        {0,0,0},
-        {0,0,0},
-        {0,0,0}
-    };
-
-    for (int i = 0; i < 3; i++){ 
-        for (int j = 0; j < 3; j++) {
-            v3[i][j] = (v1[0][0] * v2[0][0]) + (v1[0][1] * v2[1][0]) + (v1[0][2] * v2[2][0]);
-        }
-    }
-
-    cout << v3[0][0] << ' ' << v3[0][1] << ' ' << v3[0][2] << '\n';
-    cout << v3[1][0] << ' ' << v3[1][1] << ' ' << v3[1][2] << '\n';
-    cout << v3[2][0] << ' ' << v3[2][1] << ' ' << v3[2][2] << '\n';
+    Matrix m1(3, 3, a);
+    Matrix m2(3, 3, b);
+    
+    Matrix m3 = m2 * m1;
 
 
-    return 0;
-}
+    cout << m3.data[0][0] << ' ' << m3.data[0][1] << ' '<< m3.data[0][2] << '\n';
+    cout << m3.data[1][0] << ' ' << m3.data[1][1] << ' '<< m3.data[1][2]<<'\n';
+    cout << m3.data[2][0] << ' ' << m3.data[2][1] << ' '<< m3.data[2][2]<<'\n';
 
-int main(int argc, char** argv){
 
     Display display;
     display.initDisplay();
