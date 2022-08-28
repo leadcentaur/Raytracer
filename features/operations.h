@@ -12,12 +12,13 @@ using namespace std;
 static const float EPSILON = 0.00001;
 static const int VEC_FLAG = 0;
 static const int POINT_FLAG = 1;
+static const int TUPLE_SIZE = 4;
 
 class Vector {
     public:
         float x, y, z, w;
 
-        Vector(float px=0.0, float py=0.0, float pz=0.0, float pw=0.0) : x(px), y(py), z(pz), w(pw)  {}
+        Vector(int px=0, int py=0, int pz=0, int pw=0) : x(px), y(py), z(pz), w(pw)  {}
         
         bool equal(float a, float b) {return fabs(a - b) < EPSILON;}
 
@@ -54,10 +55,23 @@ class Vector {
 
         float magnitude();
         float length();
+
 	    Vector cross(const Vector& a);
+        Vector ToVec3(vector<int> &v);
+        vector<int> FromVec3();
 };
 
 float Vector::magnitude() { return sqrt((*this)*(*this)); }
+
+Vector Vector::ToVec3(vector<int> &v)
+{
+    if (v.size() > TUPLE_SIZE) throw invalid_argument("Vec3 must have a length of 3 (x, y, z, w)");
+    return Vector(v[0], v[1], v[2], v[3]);
+}
+
+vector<int> Vector::FromVec3() {
+    return vector<int>{int(this->x), int(this->y), int(this->z), int(this->w)};
+}
 
 void Vector::toInt() {
     this->x = int(this->x);
@@ -67,8 +81,8 @@ void Vector::toInt() {
 }
 
 void Vector::print() const {
-	printf("(%lf, %lf, %lf, %lf)\n", this->x,this->y,
-		this->z,this->w);
+	// printf("(%lf, %lf, %lf, %lf)\n", this->x,this->y,
+	// 	this->z,this->w);
 }
 
 Vector& Vector::operator=(const Vector& a) {

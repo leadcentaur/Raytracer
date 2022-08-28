@@ -29,36 +29,37 @@ class Matrix {
         //! With specified value
         Matrix(int rows, int cols, int value) : mRows(rows), mCols(cols), data(std::vector<std::vector<int>>(rows, std::vector <int> (cols, value))) {}
 
-          //! Initializes a square matrix
-          //!  dimension number of rows and columns
+        //! Initializes a square matrix
+        //!  dimension number of rows and columns
         Matrix(int dimension) {
             Matrix(dimension, dimension);
         }
 
         Matrix operator*(const Matrix &m) const;
-        Matrix operator*(const Vector &v) const;
+        Vector operator*(const Vector &v) const;
 
         Matrix& Transpose();
         Matrix& Inverse();
         Matrix fill(int rows, int cols, int val);
+        void print() const;
 };
 
-//! used to multiply A * n where A is a matrix and b is a vector / tuple
-Matrix Matrix::operator*(const Vector &v) const{
-    if (this->mRows != 4) 
-    { 
-        throw invalid_argument("When mulitply a Matrix by a vector. dimensions of matrix must be : 4xn (rows x cols)");
-    }
-    for (auto j = 0; j < p; ++j)
+//
+Vector Matrix::operator*(const Vector &v) const{
+  
+    vector<int> res = {int(v.x), int(v.y), int(v.z), int(v.w)};
+    // The vector will always have for components x, y, z, w. 
+    vector<int> result = {0,0,0,0};
+
+    for (auto j = 0; j < mCols; ++j)
     {
-        for (auto k = 0; k < m; ++k)
-        {
-            
+        for (auto k = 0; k < mCols; ++k) {
+            result[j] += data[j][k] * res[k];
         }
     }
+    return Vector(result[0],result[1],result[2],result[3]);
 }
 
-//! used to multiple A * B where A and are both Matrices
 Matrix Matrix::operator*(const Matrix &b) const {
     if (mCols != b.mRows) {
         throw invalid_argument("Cannot multiplty these matrices." );

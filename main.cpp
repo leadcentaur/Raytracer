@@ -84,9 +84,10 @@ std::vector <std::vector<T>> MultiplyM(std::vector <std::vector<T>> &a, std::vec
 int main(int argc, char** argv){
     
     vector<vector<int>> a = {
-        {2,5,1},
-        {6,7,1},
-        {1,8,1}
+        {1,2,3,4},
+        {2,4,4,2},
+        {8,6,4,1},
+        {0,0,0,1}
     };
    std::vector<vector<int>> b = {
         {1,2,1},
@@ -94,17 +95,11 @@ int main(int argc, char** argv){
         {2,3,4}
     };
 
-    Matrix m1(3, 3, a);
-    Matrix m2(3, 3, b);
-    
-    Matrix m3 = m2 * m1;
+    Matrix m1 = Matrix(4,4, a);
+    Vector v1 = Vector(1,2,3,1);
 
-
-    cout << m3.data[0][0] << ' ' << m3.data[0][1] << ' '<< m3.data[0][2] << '\n';
-    cout << m3.data[1][0] << ' ' << m3.data[1][1] << ' '<< m3.data[1][2]<<'\n';
-    cout << m3.data[2][0] << ' ' << m3.data[2][1] << ' '<< m3.data[2][2]<<'\n';
-
-
+    Vector pfv = m1 * v1;
+    cout << pfv.x << ' ' << pfv.y;
     Display display;
     display.initDisplay();
 }
