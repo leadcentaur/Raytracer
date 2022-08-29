@@ -18,26 +18,27 @@ class Matrix {
         Matrix(int rows, int columns, const vector<vector<int>> &vec) : mRows(rows), mCols(columns), data(vec) {
             if (mRows != mCols) { throw invalid_argument("The dimensions of the matrix specified are not equal.");}
         }
-
         Matrix(int mRows, int mCols)
             : mRows(mRows),
             mCols(mCols),
             data(mRows * mCols) {
         }
-
-        //! Initializes an empty matrix of specified dimensions
-        //! With specified value
-        Matrix(int rows, int cols, int value) : mRows(rows), mCols(cols), data(std::vector<std::vector<int>>(rows, std::vector <int> (cols, value))) {}
+        Matrix(int rows, int cols, int value) 
+            : mRows(rows), mCols(cols), 
+        data(std::vector<std::vector<int>>(rows, std::vector <int> (cols, value))) 
+        {}
 
         Matrix operator*(const Matrix &m) const;
         Vector operator*(const Vector &v) const;
 
+        int Detriment();
         Matrix Transpose();
-        Matrix& Inverse();
+        Matrix Inverse();
+
+        Matrix subMatrix(const Matrix &m, int row, int column);
         Matrix fill(int rows, int cols, int val);
         void print() const;
 };
-
 //Transpose matrix function
 Matrix Matrix::Transpose()
 {
@@ -53,6 +54,22 @@ Matrix Matrix::Transpose()
 
     this->data = data;
     return *this;
+}
+
+
+Matrix subMatrix(const Matrix &m, int row, int columns)
+{
+     for (int i = 0; i < m.mRows; i++){
+        if (row == i){
+            
+        }
+     }
+    //return *this;
+}
+
+int Matrix::Detriment()
+{   
+    return (this->data[0][0] * this->data[1][1]) - (this->data[1][0] * this->data[0][1]);
 }
 
 void Matrix::print() const

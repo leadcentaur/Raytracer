@@ -81,8 +81,8 @@ void Vector::toInt() {
 }
 
 void Vector::print() const {
-	// printf("(%lf, %lf, %lf, %lf)\n", this->x,this->y,
-	// 	this->z,this->w);
+	printf("(%lf, %lf, %lf, %lf)\n", this->x,this->y,
+		this->z,this->w);
 }
 
 Vector& Vector::operator=(const Vector& a) {

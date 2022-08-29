@@ -107,6 +107,10 @@ int main(int argc, char** argv){
     Matrix mo = m1 * im;
     mo.print();
 
+    vector<vector<int>> square_mat = {{1,5},{-3,2}};
+    Matrix square = Matrix(2,2, square_mat);
+    cout << square.Detriment();
+
     cout << '\n';
     mo.Transpose();
     mo.print();
