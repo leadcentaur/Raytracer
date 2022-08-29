@@ -69,6 +69,7 @@
         "variant": "cpp",
         "xlocbuf": "cpp",
         "xlocmes": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "resumable": "cpp"
     }
 }

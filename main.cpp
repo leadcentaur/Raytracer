@@ -12,6 +12,9 @@
 #define SCREEN_WIDTH 900
 #define SCREEN_HEIGHT 550
 
+using namespace std;
+using namespace std::chrono;
+
 struct Projectile {
     Vector* point;
     Vector* velocity;
@@ -84,22 +87,37 @@ std::vector <std::vector<T>> MultiplyM(std::vector <std::vector<T>> &a, std::vec
 int main(int argc, char** argv){
     
     vector<vector<int>> a = {
-        {1,2,3,4},
-        {2,4,4,2},
-        {8,6,4,1},
+        {0,9,3,0},
+        {9,8,0,8},
+        {1,8,5,3},
+        {0,0,5,8}
+    };
+
+    vector<vector<int>> i = {
+        {1,0,0,0},
+        {0,1,0,0},
+        {0,0,1,0},
         {0,0,0,1}
     };
-   std::vector<vector<int>> b = {
-        {1,2,1},
-        {0,1,0},
-        {2,3,4}
-    };
+   
 
     Matrix m1 = Matrix(4,4, a);
-    Vector v1 = Vector(1,2,3,1);
+    Matrix im = Matrix(4,4, i);
 
-    Vector pfv = m1 * v1;
-    cout << pfv.x << ' ' << pfv.y;
+    Matrix mo = m1 * im;
+    mo.print();
+
+    cout << '\n';
+    mo.Transpose();
+    mo.print();
+
+    auto start = high_resolution_clock::now();
+    auto stop = high_resolution_clock::now();
+ 
+    auto duration = duration_cast<microseconds>(stop - start);
+ 
+    cout << "Time taken by function: "
+         << duration.count() << " microseconds" << endl;
     Display display;
     display.initDisplay();
 }

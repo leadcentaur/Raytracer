@@ -29,28 +29,56 @@ class Matrix {
         //! With specified value
         Matrix(int rows, int cols, int value) : mRows(rows), mCols(cols), data(std::vector<std::vector<int>>(rows, std::vector <int> (cols, value))) {}
 
-        //! Initializes a square matrix
-        //!  dimension number of rows and columns
-        Matrix(int dimension) {
-            Matrix(dimension, dimension);
-        }
-
         Matrix operator*(const Matrix &m) const;
         Vector operator*(const Vector &v) const;
 
-        Matrix& Transpose();
+        Matrix Transpose();
         Matrix& Inverse();
         Matrix fill(int rows, int cols, int val);
         void print() const;
 };
 
-//
+//Transpose matrix function
+Matrix Matrix::Transpose()
+{
+    int nrows = this->mRows;
+    int ncols = this->mCols;
+    Matrix res = Matrix(nrows, ncols, 0);
+    std::vector<std::vector<int>> data(nrows, std::vector <int> (ncols, 0));
+
+    #pragma omp parallel for collapse(2)
+    for (int i = 0; i < ncols; i++)
+        for (int j = 0; j < nrows; j++)
+            data[i][j] = this->data[j][i];
+
+    this->data = data;
+    return *this;
+}
+
+void Matrix::print() const
+{   
+    int nrows = this->mRows;
+    int ncols = this->mCols;
+
+    #pragma omp parallel for collapse(2)
+    for (int i = 0; i < nrows; i++)
+    {
+        cout << "{";
+        for (int j = 0; j <ncols; j++)
+        {
+            cout << ' ' << this->data[i][j] << ' ';
+        }
+        cout << "}\n";
+    }
+}
+
 Vector Matrix::operator*(const Vector &v) const{
   
     vector<int> res = {int(v.x), int(v.y), int(v.z), int(v.w)};
     // The vector will always have for components x, y, z, w. 
     vector<int> result = {0,0,0,0};
 
+    #pragma omp parallel for collapse(2)
     for (auto j = 0; j < mCols; ++j)
     {
         for (auto k = 0; k < mCols; ++k) {
