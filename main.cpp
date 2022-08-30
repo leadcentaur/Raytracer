@@ -87,33 +87,23 @@ std::vector <std::vector<T>> MultiplyM(std::vector <std::vector<T>> &a, std::vec
 int main(int argc, char** argv){
     
     vector<vector<int>> a = {
-        {0,9,3,0},
-        {9,8,0,8},
-        {1,8,5,3},
-        {0,0,5,8}
+        {3,5,0},
+        {2,-1,-7},
+        {6,-1,5}
     };
+    
+    Matrix m1 = Matrix(3,3, a);
+    Matrix m2 = submatrix(m1, 1, 0);
+    m2.print();
+    //cout << m2.Detriment();
 
-    vector<vector<int>> i = {
-        {1,0,0,0},
-        {0,1,0,0},
-        {0,0,1,0},
-        {0,0,0,1}
-    };
-   
+    int m = minor(m1, 1, 0);
+    cout << m;
 
-    Matrix m1 = Matrix(4,4, a);
-    Matrix im = Matrix(4,4, i);
 
-    Matrix mo = m1 * im;
-    mo.print();
-
-    vector<vector<int>> square_mat = {{1,5},{-3,2}};
-    Matrix square = Matrix(2,2, square_mat);
-    cout << square.Detriment();
-
-    cout << '\n';
-    mo.Transpose();
-    mo.print();
+    //write a submatrix function
+    int row_index = 0;
+    int col_index = 1;
 
     auto start = high_resolution_clock::now();
     auto stop = high_resolution_clock::now();

@@ -10,11 +10,11 @@
 using namespace std;
 
 class Matrix {
-    public:
+    private:
         int mRows;
         int mCols;
         std::vector<vector<int>> data;
-
+    public:
         Matrix(int rows, int columns, const vector<vector<int>> &vec) : mRows(rows), mCols(columns), data(vec) {
             if (mRows != mCols) { throw invalid_argument("The dimensions of the matrix specified are not equal.");}
         }
@@ -28,6 +28,12 @@ class Matrix {
         data(std::vector<std::vector<int>>(rows, std::vector <int> (cols, value))) 
         {}
 
+        int nCols() const { return mCols; }
+        int nRows() const { return mRows; }
+        vector<vector<int>> getData() const { return data; }
+
+        std::vector<vector<int>> mData() const { return data; }
+
         Matrix operator*(const Matrix &m) const;
         Vector operator*(const Vector &v) const;
 
@@ -35,15 +41,17 @@ class Matrix {
         Matrix Transpose();
         Matrix Inverse();
 
-        Matrix subMatrix(const Matrix &m, int row, int column);
+        //Matrix submatrix(int row, int column) const;
+        int cofactor(int row, int col) const;
+
         Matrix fill(int rows, int cols, int val);
         void print() const;
 };
 //Transpose matrix function
 Matrix Matrix::Transpose()
 {
-    int nrows = this->mRows;
-    int ncols = this->mCols;
+    int nrows = this->nRows();
+    int ncols = this->nCols();
     Matrix res = Matrix(nrows, ncols, 0);
     std::vector<std::vector<int>> data(nrows, std::vector <int> (ncols, 0));
 
@@ -56,24 +64,47 @@ Matrix Matrix::Transpose()
     return *this;
 }
 
-
-Matrix subMatrix(const Matrix &m, int row, int columns)
-{
-     for (int i = 0; i < m.mRows; i++){
-        if (row == i){
-            
+Matrix submatrix(const Matrix &m, int row, int col)
+{   
+    vector<vector<int>> d = m.getData();
+    int subi = 0;
+    for (int i = 0; i < m.nRows(); i++)
+    {   
+        int subj = 0;
+        if (i == row) continue;
+        for (int j = 0; j < 4; j++) {
+            if (j == col) continue;
+            int val = d[i][j];
+            d[subi][subj] = val;
+            subj++;
         }
-     }
-    //return *this;
+        subi++;
+    }
+    Matrix result = Matrix(m.nRows()-1, m.nCols()-1, d);
+    return result;
 }
 
 int Matrix::Detriment()
 {   
-    return (this->data[0][0] * this->data[1][1]) - (this->data[1][0] * this->data[0][1]);
+    vector<vector<int>> data = this->getData();
+    return (data[0][0] * data[1][1]) - (data[1][0] * data[0][1]);
 }
+
+//! The minor is the determiant of the submatrix
+int minor(const Matrix &m, int row, int col)
+{
+    return submatrix(m, row, col).Detriment();
+}
+
+int cofactor(const Matrix &m, int row, int col)
+{
+    
+}
+
 
 void Matrix::print() const
 {   
+    cout << '\n';
     int nrows = this->mRows;
     int ncols = this->mCols;
 
@@ -87,6 +118,7 @@ void Matrix::print() const
         }
         cout << "}\n";
     }
+    cout << '\n';
 }
 
 Vector Matrix::operator*(const Vector &v) const{
