@@ -16,9 +16,9 @@ static const int TUPLE_SIZE = 4;
 
 class Vector {
     public:
-        float x, y, z, w;
+        double x, y, z, w;
 
-        Vector(int px=0, int py=0, int pz=0, int pw=0) : x(px), y(py), z(pz), w(pw)  {}
+        Vector(double px=0, double py=0, double pz=0, double pw=0) : x(px), y(py), z(pz), w(pw)  {}
         
         bool equal(float a, float b) {return fabs(a - b) < EPSILON;}
 

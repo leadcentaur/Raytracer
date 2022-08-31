@@ -85,25 +85,32 @@ std::vector <std::vector<T>> MultiplyM(std::vector <std::vector<T>> &a, std::vec
 }
 
 int main(int argc, char** argv){
-    vector<vector<int>> a = {
+    vector<vector<int>> z = {
         {1,2,6},
         {-5,8,-4},
         {2,6,4}
     };
 
-    vector<vector<double>> b = {
+    vector<vector<double>> a = {
         {8,-5,9,2},
         {7,5,6,1},
         {-6,0,9,6},
         {-3,0,-9,-4}
     };
 
+    vector<vector<double>> b = {
+        {9,3,0,9},
+        {-5,-2,-6,-3},
+        {-4,9,6,4},
+        {-7,6,6,2}
+    };
 
-    
-    cout << '\n';
-    Matrix m3 = Matrix(4,4, b);
-    Matrix m5 = m3.Inverse();
-    m5.print();
+    Vector translation = Vector(1,2,3);
+    Vector point = Vector(2,3,4);
+
+    Translation(point);
+    Vector res = translation * point;
+
    
     //write a submatrix function
     int row_index = 0;

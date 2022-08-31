@@ -35,12 +35,16 @@ class Matrix {
         int Detriment();
 
         vector<vector<double>> getData() const { return data; }
+        void setData(vector<vector<double>> &v) { data = v; }
 
         Matrix operator*(const Matrix &m) const;
         Vector operator*(const Vector &v) const;
 
         Matrix Transpose();
         Matrix Inverse();
+
+        static Matrix Translation(const Vector&v );
+        static Matrix Identity(int nRows, int nCols, int value = 1);
 
         //Matrix submatrix(int row, int column) const;
         Matrix fill(int rows, int cols, int val);
@@ -82,6 +86,31 @@ Vector Matrix::operator*(const Vector &v) const{
         }
     }
     return Vector(result[0],result[1],result[2],result[3]);
+}
+
+static Matrix Identity(int nRows, int nCols, int value = 0)
+{   
+    Matrix identity = Matrix(nRows,nCols,value);
+    auto data = identity.getData();
+
+    for (int i = 0; i < nRows; i++){
+        data[i][i] = 1;
+    }
+    identity.setData(data);
+    return identity;
+}
+
+//! translation function - takes a vector (x,y,z,w)
+static Matrix Translation(const Vector& v)
+{
+    Matrix id = Identity(4,4,0);
+    auto mData = id.getData();
+
+    mData[0][0] = v.x;
+    mData[0][1] = v.y;
+    mData[0][2] = v.z;
+    mData[0][3] = v.w; 
+
 }
 
 //Transpose matrix function
