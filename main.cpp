@@ -91,7 +91,7 @@ int main(int argc, char** argv){
         {2,6,4}
     };
 
-    vector<vector<int>> b = {
+    vector<vector<double>> b = {
         {8,-5,9,2},
         {7,5,6,1},
         {-6,0,9,6},
@@ -101,19 +101,9 @@ int main(int argc, char** argv){
 
     
     cout << '\n';
-    
-    // Matrix m1 = Matrix(3,3, a);
-    // cout << "\nThe determinent of m1 is: " << m1.Detriment() << '\n';
-
-    // Matrix m2 = Matrix(3,3, a);
-    // cout << m2.Detriment();
-
     Matrix m3 = Matrix(4,4, b);
-    cout << m3.canInvert() << '\n';
-
-    Matrix x = m3.Inverse();
-    x.print();
-    
+    Matrix m5 = m3.Inverse();
+    m5.print();
    
     //write a submatrix function
     int row_index = 0;
