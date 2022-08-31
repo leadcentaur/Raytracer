@@ -48,6 +48,41 @@ class Matrix {
         void print() const;
         void printDouble() const;
 };
+
+Matrix Matrix::operator*(const Matrix &b) const {
+    if (mCols != b.mRows) {
+        throw invalid_argument("Cannot multiplty these matrices." );
+    }
+    const int n = this->mRows; // a rows
+    const int m = this->mCols;
+    const int p = b.mCols;
+
+    std::vector<std::vector<int>> c = std::vector<std::vector<int>>(n, std::vector <int> (p, 0));
+    for (auto j = 0; j < p; ++j) {
+        for (auto k = 0; k < m; ++k) {
+            for (auto i = 0; i < n; ++i)
+            {
+                c[i][j] += this->data[i][k] * b.data[k][j];
+            }
+        }
+    }
+    return Matrix(n, p, c);
+}
+
+Vector Matrix::operator*(const Vector &v) const{
+  
+    vector<int> res = {int(v.x), int(v.y), int(v.z), int(v.w)};
+    vector<int> result = {0,0,0,0};
+    
+    #pragma omp parallel for collapse(2)
+    for (auto j = 0; j < mCols; ++j) {
+        for (auto k = 0; k < mCols; ++k) {
+            result[j] += data[j][k] * res[k];
+        }
+    }
+    return Vector(result[0],result[1],result[2],result[3]);
+}
+
 //Transpose matrix function
 Matrix Matrix::Transpose()
 {
@@ -69,8 +104,7 @@ Matrix submatrix(const Matrix &m, int row, int col)
 {   
     vector<vector<int>> d = m.getData();
     int subi = 0;
-    for (int i = 0; i < m.nRows(); i++)
-    {   
+    for (int i = 0; i < m.nRows(); i++) {
         int subj = 0;
         if (i == row) continue;
         for (int j = 0; j < 4; j++) {
@@ -98,17 +132,17 @@ int cofactor(const Matrix &m, int row, int col)
 }
 int Matrix::Detriment()
 {   
+    int determinent = 0;
     int ncols = this->nCols();
     int nrows = this->nRows();
     
-    int determinent = 0;
     vector<vector<int>> data = this->getData();
     if (ncols == 2 && nrows == 2) {
         return (data[0][0] * data[1][1]) - (data[1][0] * data[0][1]);
     } else {
-        for (int i = 0; i < ncols; i++) {
+        #pragma omp parallel for
+        for (int i = 0; i < ncols; i++) 
             determinent += cofactor(*this, 0, i) * data[0][i];
-        }
     }
     return determinent;
 }
@@ -119,17 +153,16 @@ Matrix Matrix::Inverse()
 {      
     int ncols = this->nCols();
     int nrows = this->nRows();
-
     vector<vector<double>> dData = this->getDoubleData();
-
     if (this->canInvert() == false){
         throw invalid_argument("The matrix is not invertable and has a determinent of 0.");
     }
-    for (int i = 0; i < nrows; i++)
-    {
+    #pragma omp parallel for collapse(2)
+    for (int i = 0; i < nrows; i++) {
         for (int j = 0; j < ncols; j++)
         {
             int c = cofactor(*this, i, j);
+            cout << "c val: " << c << '\n';
             dData[i][j] = c / this->Detriment(); 
         }
     }
@@ -144,8 +177,7 @@ void Matrix::print() const
     int ncols = this->mCols;
 
     #pragma omp parallel for collapse(2)
-    for (int i = 0; i < nrows; i++)
-    {
+    for (int i = 0; i < nrows; i++) {
         cout << "{";
         for (int j = 0; j <ncols; j++)
         {
@@ -174,42 +206,4 @@ void Matrix::printDouble() const
         cout << "}\n";
     }
     cout << '\n';
-}
-
-Vector Matrix::operator*(const Vector &v) const{
-  
-    vector<int> res = {int(v.x), int(v.y), int(v.z), int(v.w)};
-    // The vector will always have for components x, y, z, w. 
-    vector<int> result = {0,0,0,0};
-
-    #pragma omp parallel for collapse(2)
-    for (auto j = 0; j < mCols; ++j)
-    {
-        for (auto k = 0; k < mCols; ++k) {
-            result[j] += data[j][k] * res[k];
-        }
-    }
-    return Vector(result[0],result[1],result[2],result[3]);
-}
-
-Matrix Matrix::operator*(const Matrix &b) const {
-    if (mCols != b.mRows) {
-        throw invalid_argument("Cannot multiplty these matrices." );
-    }
-    const int n = this->mRows; // a rows
-    const int m = this->mCols;
-    const int p = b.mCols;
-
-    std::vector<std::vector<int>> c = std::vector<std::vector<int>>(n, std::vector <int> (p, 0));
-    for (auto j = 0; j < p; ++j)
-    {
-        for (auto k = 0; k < m; ++k)
-        {
-            for (auto i = 0; i < n; ++i)
-            {
-                c[i][j] += this->data[i][k] * b.data[k][j];
-            }
-        }
-    }
-    return Matrix(n, p, c);
 }
