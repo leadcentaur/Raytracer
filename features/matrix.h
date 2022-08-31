@@ -15,13 +15,8 @@ class Matrix {
         int mCols;
         std::vector<vector<int>> data;
     public:
-        Matrix(int rows, int columns, const vector<vector<int>> &vec) : mRows(rows), mCols(columns), data(vec) {
+        Matrix(int rows, int columns, const vector<vector<int>> vec) : mRows(rows), mCols(columns), data(vec) {
             if (mRows != mCols) { throw invalid_argument("The dimensions of the matrix specified are not equal.");}
-        }
-        Matrix(int mRows, int mCols)
-            : mRows(mRows),
-            mCols(mCols),
-            data(mRows * mCols) {
         }
         Matrix(int rows, int cols, int value) 
             : mRows(rows), mCols(cols), 
@@ -31,6 +26,7 @@ class Matrix {
         int nCols() const { return mCols; }
         int nRows() const { return mRows; }
         vector<vector<int>> getData() const { return data; }
+        void setData(vector<vector<int>> &v) { data = v;}
 
         std::vector<vector<int>> mData() const { return data; }
 
@@ -42,8 +38,6 @@ class Matrix {
         Matrix Inverse();
 
         //Matrix submatrix(int row, int column) const;
-        int cofactor(int row, int col) const;
-
         Matrix fill(int rows, int cols, int val);
         void print() const;
 };
@@ -52,13 +46,16 @@ Matrix Matrix::Transpose()
 {
     int nrows = this->nRows();
     int ncols = this->nCols();
-    Matrix res = Matrix(nrows, ncols, 0);
+    vector<vector<int>> oData = this->getData();
+
+    cout << "Number of rows; " << nrows << '\n';
+    cout << "Number of cols; " << ncols << '\n';
+
     std::vector<std::vector<int>> data(nrows, std::vector <int> (ncols, 0));
 
-    #pragma omp parallel for collapse(2)
     for (int i = 0; i < ncols; i++)
         for (int j = 0; j < nrows; j++)
-            data[i][j] = this->data[j][i];
+            data[i][j] = oData[i][j];
 
     this->data = data;
     return *this;
@@ -66,15 +63,20 @@ Matrix Matrix::Transpose()
 
 Matrix submatrix(const Matrix &m, int row, int col)
 {   
+    int nrows = m.nRows();
+    int ncols = m.nCols();
+
     vector<vector<int>> d = m.getData();
+
     int subi = 0;
-    for (int i = 0; i < m.nRows(); i++)
+    for (int i = 0; i < nrows; i++)
     {   
         int subj = 0;
         if (i == row) continue;
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < ncols; j++) {
             if (j == col) continue;
             int val = d[i][j];
+            cout << val << '\n';
             d[subi][subj] = val;
             subj++;
         }
@@ -83,32 +85,44 @@ Matrix submatrix(const Matrix &m, int row, int col)
     Matrix result = Matrix(m.nRows()-1, m.nCols()-1, d);
     return result;
 }
-
-int Matrix::Detriment()
-{   
-    vector<vector<int>> data = this->getData();
-    return (data[0][0] * data[1][1]) - (data[1][0] * data[0][1]);
-}
-
 //! The minor is the determiant of the submatrix
 int minor(const Matrix &m, int row, int col)
-{
+{   
+    cout << "Minor called." << '\n';
     return submatrix(m, row, col).Detriment();
 }
-
 int cofactor(const Matrix &m, int row, int col)
-{
-    
+{   
+    cout << "Co-factor called." << '\n';
+    int miner = minor(m, row, col);
+    return (row + col) % 2 == 0 ? miner : -miner;
 }
+int Matrix::Detriment()
+{   
+    int ncols = this->nCols();
+    int nrows = this->nRows();
 
+    // cout << "ncols: " << ncols;
+    // cout << "nrows: " << nrows;
+    
+    size_t determinent = 0;
+    vector<vector<int>> data = this->getData();
+    if (ncols == 2 && nrows == 2) {
+        return (data[0][0] * data[1][1]) - (data[1][0] * data[0][1]);
+    } else {
+        for (int i = 0; i < ncols+1; i++) {
+            determinent += cofactor(*this, 0, i) * data[0][i];
+        }
+    }
+    return determinent;
+}
 
 void Matrix::print() const
 {   
     cout << '\n';
-    int nrows = this->mRows;
-    int ncols = this->mCols;
+    int nrows = this->nRows();
+    int ncols = this->nCols();
 
-    #pragma omp parallel for collapse(2)
     for (int i = 0; i < nrows; i++)
     {
         cout << "{";

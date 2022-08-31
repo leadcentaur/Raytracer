@@ -85,22 +85,33 @@ std::vector <std::vector<T>> MultiplyM(std::vector <std::vector<T>> &a, std::vec
 }
 
 int main(int argc, char** argv){
-    
     vector<vector<int>> a = {
-        {3,5,0},
-        {2,-1,-7},
-        {6,-1,5}
+        {1,2,6},
+        {-5,8,-4},
+        {2,6,4}
     };
+
+    vector<vector<int>> b = {
+        {1,2,3,4},
+        {1,2,3,4},
+        {1,2,3,4}
+    };
+
+
     
-    Matrix m1 = Matrix(3,3, a);
-    Matrix m2 = submatrix(m1, 1, 0);
+    cout << '\n';
+    
+    // Matrix m1 = Matrix(3,3, a);
+    // cout << "\nThe determinent of m1 is: " << m1.Detriment() << '\n';
+
+    Matrix m2 = Matrix(4,4, b);
+    // cout << "The determinent of m2 is: " << m2.Detriment() << '\n';
+    m2.Transpose();
     m2.print();
-    //cout << m2.Detriment();
 
-    int m = minor(m1, 1, 0);
-    cout << m;
-
-
+    cout << '\n';
+    
+   
     //write a submatrix function
     int row_index = 0;
     int col_index = 1;
