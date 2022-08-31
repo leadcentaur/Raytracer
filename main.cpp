@@ -92,9 +92,10 @@ int main(int argc, char** argv){
     };
 
     vector<vector<int>> b = {
-        {1,2,3,4},
-        {1,2,3,4},
-        {1,2,3,4}
+        {8,-5,9,2},
+        {7,5,6,1},
+        {-6,0,9,6},
+        {-3,0,-9,-4}
     };
 
 
@@ -104,12 +105,14 @@ int main(int argc, char** argv){
     // Matrix m1 = Matrix(3,3, a);
     // cout << "\nThe determinent of m1 is: " << m1.Detriment() << '\n';
 
-    Matrix m2 = Matrix(4,4, b);
-    // cout << "The determinent of m2 is: " << m2.Detriment() << '\n';
-    m2.Transpose();
-    m2.print();
+    // Matrix m2 = Matrix(3,3, a);
+    // cout << m2.Detriment();
 
-    cout << '\n';
+    Matrix m3 = Matrix(4,4, b);
+    cout << m3.canInvert() << '\n';
+
+    Matrix x = m3.Inverse();
+    x.print();
     
    
     //write a submatrix function
