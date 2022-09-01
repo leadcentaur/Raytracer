@@ -12,6 +12,8 @@
 #define SCREEN_WIDTH 900
 #define SCREEN_HEIGHT 550
 
+#define _USE_MATH_DEFINES
+
 using namespace std;
 using namespace std::chrono;
 
@@ -105,12 +107,38 @@ int main(int argc, char** argv){
         {-7,6,6,2}
     };
 
-    Vector translation = Vector(1,2,3);
-    Vector point = Vector(2,3,4);
+    //point multiplied by translation
+    Vector tranformation = Vector(5,-3,2,1);
+    Vector point = Vector(-3, 4, 5, 1);
+    Matrix tM = Translation(tranformation);
+    Vector pXtform = tM * point;
+    tM.print();
 
-    Translation(point);
-    Vector res = translation * point;
+    //point multiplied by inverse of trans
+    Matrix inv = tM.Inverse();
+    Vector res = inv * point;
+    //res.print();
 
+    //scaling by a vector or a point
+    Vector scaleVec = Vector(2, 3, 4, 1);
+    Vector p0 = Vector(-4, 6, 8, 1);
+    Matrix scaleMatrix = Scaling(scaleVec);
+    Vector pXsm = scaleMatrix * p0;
+    //pXsm.print();
+
+    //scaling inverse
+    Matrix invScalemat = scaleMatrix.Inverse();
+    Vector iXv = invScalemat * p0;
+    //iXv.print();
+
+    //reflection example
+    Matrix scalingMatrix = Scaling(Vector(-1, 1, 1, 0));
+    //the point to reflect
+    Vector reflectPoint = Vector(2,3,4,1);
+    Vector reflectionVec = scalingMatrix * reflectPoint;
+    //gets reflected on the xAxis
+    reflectionVec.print();
+    
    
     //write a submatrix function
     int row_index = 0;

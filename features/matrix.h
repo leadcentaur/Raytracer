@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <functional>
 
+#define _USE_MATH_DEFINES
+
 using namespace std;
 
 class Matrix {
@@ -44,6 +46,7 @@ class Matrix {
         Matrix Inverse();
 
         static Matrix Translation(const Vector&v );
+        static Matrix Scaling(const Vector&v);
         static Matrix Identity(int nRows, int nCols, int value = 1);
 
         //Matrix submatrix(int row, int column) const;
@@ -65,8 +68,7 @@ Matrix Matrix::operator*(const Matrix &b) const {
     std::vector<std::vector<double>> c = vector<vector<double>>(n, vector<double> (p, 0));
     for (auto j = 0; j < p; ++j) {
         for (auto k = 0; k < m; ++k) {
-            for (auto i = 0; i < n; ++i)
-            {
+            for (auto i = 0; i < n; ++i) {
                 c[i][j] += this->data[i][k] * b.data[k][j];
             }
         }
@@ -92,7 +94,6 @@ static Matrix Identity(int nRows, int nCols, int value = 0)
 {   
     Matrix identity = Matrix(nRows,nCols,value);
     auto data = identity.getData();
-
     for (int i = 0; i < nRows; i++){
         data[i][i] = 1;
     }
@@ -103,17 +104,34 @@ static Matrix Identity(int nRows, int nCols, int value = 0)
 //! translation function - takes a vector (x,y,z,w)
 static Matrix Translation(const Vector& v)
 {
-    Matrix id = Identity(4,4,0);
-    auto mData = id.getData();
+    Matrix translationMatrix = Identity(4,4,0);
+    auto mData = translationMatrix.getData();
 
-    mData[0][0] = v.x;
-    mData[0][1] = v.y;
-    mData[0][2] = v.z;
-    mData[0][3] = v.w; 
+    //! translation matrix unchanging
+    mData[0][3] = v.x; // { 1 0 0 x }
+    mData[1][3] = v.y; // { 0 1 0 y}
+    mData[2][3] = v.z; // { 0 0 1 z }
+    mData[3][3] = v.w; // { 0 0 0 1 }
 
+    translationMatrix.setData(mData);
+    return translationMatrix;
 }
 
-//Transpose matrix function
+static Matrix Scaling(const Vector& v)
+{
+    Matrix scalingMatrix = Identity(4,4,0);
+    auto mData = scalingMatrix.getData();
+
+    //! scaling matrix unchanging
+    mData[0][0] = v.x;  // { x 0 0 0 }
+    mData[1][1] = v.y;  // { 0 y 0 0 }
+    mData[2][2] = v.z;  // { 0 0 z 0 }
+    mData[3][3] = v.w;  // { 0 0 0 1 }
+
+    scalingMatrix.setData(mData);
+    return scalingMatrix;
+
+}
 Matrix Matrix::Transpose()
 {
     int nrows = this->nRows();
@@ -129,7 +147,6 @@ Matrix Matrix::Transpose()
     this->data = data;
     return *this;
 }
-
 Matrix submatrix(const Matrix &m, int row, int col)
 {   
     vector<vector<double>> d = m.getData();
@@ -149,7 +166,6 @@ Matrix submatrix(const Matrix &m, int row, int col)
     return result;
 }
 
-//! The minor is the determiant of the submatrix
 int minor(const Matrix &m, int row, int col)
 {
     return submatrix(m, row, col).Detriment();
