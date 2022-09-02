@@ -10,6 +10,7 @@
 #define _USE_MATH_DEFINES
 
 using namespace std;
+enum Axis {RotX, RotY, RotZ};
 
 class Matrix {
     private:
@@ -49,6 +50,8 @@ class Matrix {
         static Matrix Scaling(const Vector&v);
         static Matrix Identity(int nRows, int nCols, int value = 1);
 
+        static Matrix Rotation(double radians, Axis rot);
+
         //Matrix submatrix(int row, int column) const;
         Matrix fill(int rows, int cols, int val);
         bool canInvert();
@@ -56,6 +59,8 @@ class Matrix {
         void print() const;
         void printDouble() const;
 };
+
+
 
 Matrix Matrix::operator*(const Matrix &b) const {
     if (mCols != b.mRows) {
@@ -90,7 +95,7 @@ Vector Matrix::operator*(const Vector &v) const{
     return Vector(result[0],result[1],result[2],result[3]);
 }
 
-static Matrix Identity(int nRows, int nCols, int value = 0)
+static Matrix Identity(int nRows = 4, int nCols = 4, int value = 0)
 {   
     Matrix identity = Matrix(nRows,nCols,value);
     auto data = identity.getData();
@@ -104,7 +109,7 @@ static Matrix Identity(int nRows, int nCols, int value = 0)
 //! translation function - takes a vector (x,y,z,w)
 static Matrix Translation(const Vector& v)
 {
-    Matrix translationMatrix = Identity(4,4,0);
+    Matrix translationMatrix = Identity();
     auto mData = translationMatrix.getData();
 
     //! translation matrix unchanging
@@ -115,6 +120,37 @@ static Matrix Translation(const Vector& v)
 
     translationMatrix.setData(mData);
     return translationMatrix;
+}
+
+//! used to rotate a vector around the x axis
+static Matrix Rotation(double radians, Axis rotation)
+{
+    //multiply vector by a rotation matrix
+    Matrix rotMatrix = Identity();
+    auto mData = rotMatrix.getData();
+    switch (rotation)
+    {
+    case Axis::RotX:
+        mData[1][1] = cos(radians);
+        mData[1][2] = asin(radians);
+        mData[2][1] = sin(radians);
+        mData[2][2] = cos(radians);
+    case Axis::RotY:
+        mData[0][0] = cos(radians);
+        mData[0][2] = sin(radians);
+        mData[2][0] = asin(radians);
+        mData[2][2] = cos(radians);
+    case Axis::RotZ:
+        mData[1][1] = cos(radians);
+        mData[1][2] = asin(radians);
+        mData[2][1] = sin(radians);
+        mData[2][2] = cos(radians);
+    default:
+        break;
+    }
+    rotMatrix.setData(mData);
+    return rotMatrix;
+
 }
 
 static Matrix Scaling(const Vector& v)
