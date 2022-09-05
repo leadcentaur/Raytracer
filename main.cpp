@@ -1,5 +1,4 @@
 #include <SDL2/SDL.h>
-#include <stdio.h>
 #include <iostream>
 #include <iomanip>
 #include <chrono>
@@ -8,11 +7,14 @@
 #include "features/color.h"
 #include "features/matrix.h"
 #include <Windows.h>
+#include <stdio.h>
+#include <math.h>
 
 #define SCREEN_WIDTH 900
 #define SCREEN_HEIGHT 550
 
 #define _USE_MATH_DEFINES
+#define P_2 1.570796
 
 using namespace std;
 using namespace std::chrono;
@@ -65,6 +67,12 @@ int Display::initDisplay() {
     return 0;
 }
 
+template<typename T>
+inline bool isinf(T value) {
+    return std::numeric_limits<T>::has_infinity &&
+        value == std::numeric_limits<T>::infinity();
+}
+
 template <class T>
 std::vector <std::vector<T>> MultiplyM(std::vector <std::vector<T>> &a, std::vector <std::vector<T>> &b)
 {
@@ -107,45 +115,24 @@ int main(int argc, char** argv){
         {-7,6,6,2}
     };
 
-    //point multiplied by translation
-    Vector tranformation = Vector(5,-3,2,1);
-    Vector point = Vector(-3, 4, 5, 1);
-    Matrix tM = Translation(tranformation);
-    Vector pXtform = tM * point;
-    tM.print();
+     vector<vector<double>> dm = {
+        {1,5},
+        {-3,2},
+    }; 
 
-    //point multiplied by inverse of trans
-    Matrix inv = tM.Inverse();
-    Vector res = inv * point;
-    //res.print();
+    Matrix hQ = Rotation(M_PI / 4, Axis::RotX);
+    Matrix inv = hQ.Inverse();
 
-    //scaling by a vector or a point
-    Vector scaleVec = Vector(2, 3, 4, 1);
-    Vector p0 = Vector(-4, 6, 8, 1);
-    Matrix scaleMatrix = Scaling(scaleVec);
-    Vector pXsm = scaleMatrix * p0;
-    //pXsm.print();
+    cout << "Inverse: ";
+    inv.print();
 
-    //scaling inverse
-    Matrix invScalemat = scaleMatrix.Inverse();
-    Vector iXv = invScalemat * p0;
-    //iXv.print();
 
-    //reflection example
-    Matrix scalingMatrix = Scaling(Vector(-1, 1, 1, 0));
-    //the point to reflect
-    Vector reflectPoint = Vector(2,3,4,1);
-    Vector reflectionVec = scalingMatrix * reflectPoint;
-    //gets reflected on the xAxis
-    reflectionVec.print();
-    
-   
-    //write a submatrix function
-    int row_index = 0;
-    int col_index = 1;
+    // Vector p1 = Vector(0,1,0,POINT_FLAG);
+    // Vector t1 = hQ * p1;
+    // t1.print();
 
     auto start = high_resolution_clock::now();
-    auto stop = high_resolution_clock::now();
+    auto stop = high_resolution_clock::now(); 
  
     auto duration = duration_cast<microseconds>(stop - start);
  
