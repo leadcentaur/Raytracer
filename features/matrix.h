@@ -8,6 +8,7 @@
 #include <functional>
 #include <stdio.h>
 #include <math.h>
+#include <complex>
 
 
 using namespace std;
@@ -87,10 +88,14 @@ Vector Matrix::operator*(const Vector &v) const{
     vector<double> res = {v.x, v.y, v.z, v.w};
     vector<double> result = {0,0,0,0};
     
-    #pragma omp parallel for collapse(2)
     for (auto j = 0; j < mCols; ++j) {
         for (auto k = 0; k < mCols; ++k) {
-            result[j] += data[j][k] * res[k];
+            if (isnan(data[j][k] * res[k])) {
+                cout << "\nNan value detected.\n";
+                result[j] = std::nextafter(data[j][k] * res[k],1);
+            } else {
+                result[j] += data[j][k] * res[k];
+            }
         }
     }
     return Vector(result[0],result[1],result[2],result[3]);
@@ -161,10 +166,10 @@ static Matrix Rotation(double radians, Axis rotation)
         break;
     case Axis::RotZ:
         cout << "Z Case executed";
+        mData[0][0] = cos(radians);
+        mData[0][1] = asin(radians);
+        mData[1][1] = sin(radians);
         mData[1][1] = cos(radians);
-        mData[1][2] = asin(radians);
-        mData[2][1] = sin(radians);
-        mData[2][2] = cos(radians);
         break;
     default:
         break;

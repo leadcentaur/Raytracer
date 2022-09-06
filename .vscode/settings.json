@@ -70,6 +70,7 @@
         "xlocbuf": "cpp",
         "xlocmes": "cpp",
         "xtree": "cpp",
-        "resumable": "cpp"
+        "resumable": "cpp",
+        "complex": "cpp"
     }
 }

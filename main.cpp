@@ -6,6 +6,7 @@
 #include "features/display.h"
 #include "features/color.h"
 #include "features/matrix.h"
+#include "fpclass.h"
 #include <Windows.h>
 #include <stdio.h>
 #include <math.h>
@@ -120,16 +121,24 @@ int main(int argc, char** argv){
         {-3,2},
     }; 
 
-    Matrix hQ = Rotation(M_PI / 4, Axis::RotX);
-    Matrix inv = hQ.Inverse();
+    Vector p1 = Vector(0,1,0,POINT_FLAG);
+    Matrix hQy = Rotation(M_PI / 4, Axis::RotY);
+    Matrix fQy = Rotation(M_PI / 2, Axis::RotY);
 
-    cout << "Inverse: ";
-    inv.print();
+    Matrix hQx = Rotation(M_PI / 4, Axis::RotX);
+    Matrix fQx = Rotation(M_PI / 2, Axis::RotX);
 
+    Matrix hQz = Rotation(M_PI / 4, Axis::RotZ);
+    Matrix fQz = Rotation(M_PI / 2, Axis::RotZ);
 
-    // Vector p1 = Vector(0,1,0,POINT_FLAG);
-    // Vector t1 = hQ * p1;
-    // t1.print();
+    Vector r4 = fQz * p1;
+    r4.print();
+
+    double x, y, z;
+    cout << "Testing z = 1/0\n";
+    // cannot set x = 1/0 directly or would produce compile error.
+    cout << "z = " << x/y << "\n";
+    cout << " _fpclass(z) = " << FPClass(z) << "\n";
 
     auto start = high_resolution_clock::now();
     auto stop = high_resolution_clock::now(); 
@@ -138,7 +147,7 @@ int main(int argc, char** argv){
  
     cout << "Time taken by function: "
          << duration.count() << " microseconds" << endl;
-    Display display;
-    display.initDisplay();
+    // Display display;
+    // display.initDisplay();
 }
 
