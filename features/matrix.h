@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <complex>
-
+#include <cfloat>\
 
 using namespace std;
 enum Axis {RotX, RotY, RotZ};
@@ -61,8 +61,27 @@ class Matrix {
         void print() const;
         void printDouble() const;
 };
+//! will need to include as utility function
 
-
+string FPClass(double x)
+{
+    int i = _fpclass(x);
+    string s;
+    switch (i)
+    {
+        case _FPCLASS_SNAN: s = "Signaling NaN";                break;
+        case _FPCLASS_QNAN: s = "Quiet NaN";                    break; 
+        case _FPCLASS_NINF: s = "Negative infinity (-INF)";     break; 
+        case _FPCLASS_NN:   s = "Negative normalized non-zero"; break;
+        case _FPCLASS_ND:   s = "Negative denormalized";        break; 
+        case _FPCLASS_NZ:   s = "Negative zero (-0)";           break; 
+        case _FPCLASS_PZ:   s = "Positive 0 (+0)";              break; 
+        case _FPCLASS_PD:   s = "Positive denormalized";        break; 
+        case _FPCLASS_PN:   s = "Positive normalized non-zero"; break; 
+        case _FPCLASS_PINF: s = "Positive infinity (+INF)";     break;
+    }
+    return s;
+}
 
 Matrix Matrix::operator*(const Matrix &b) const {
     if (mCols != b.mRows) {
@@ -87,17 +106,16 @@ Vector Matrix::operator*(const Vector &v) const{
   
     vector<double> res = {v.x, v.y, v.z, v.w};
     vector<double> result = {0,0,0,0};
+    vector<vector<double>> data = this->getData();
+
+    this->print();
     
     for (auto j = 0; j < mCols; ++j) {
         for (auto k = 0; k < mCols; ++k) {
-            if (isnan(data[j][k] * res[k])) {
-                cout << "\nNan value detected.\n";
-                result[j] = std::nextafter(data[j][k] * res[k],1);
-            } else {
-                result[j] += data[j][k] * res[k];
-            }
+            result[j] += data[j][k] * (res[k]);
         }
     }
+
     return Vector(result[0],result[1],result[2],result[3]);
 }
 
@@ -110,9 +128,6 @@ static Matrix Identity(int nRows = 4, int nCols = 4, int value = 0)
     };
 
     Matrix identity = Matrix(nRows,nCols,init);
-    // cout << "num rows: " << identity.nRows() << '\n';
-    // cout << "num cols: " << identity.nCols() << '\n';
-
     auto data = identity.getData();
     for (int i = 0; i < nRows; i++){
         data[i][i] = 1;
@@ -145,29 +160,26 @@ static Matrix Translation(const Vector& v)
 //! used to rotate a vector around the x axis
 static Matrix Rotation(double radians, Axis rotation)
 {
-    //multiply vector by a rotation matrix
     Matrix rotMatrix = Identity();
     vector<vector<double>> mData = rotMatrix.getData();
     switch (rotation)
     {
     case Axis::RotX:
-        cout << "X Case executed";
+        cout << "X Case executed.";
         mData[1][1] = cos(radians);
-        mData[1][2] = asin(radians);
+        mData[1][2] = -+sin(radians);
         mData[2][1] = sin(radians);
         mData[2][2] = cos(radians);
         break;
     case Axis::RotY:
-        cout << "Y Case executed";
         mData[0][0] = cos(radians);
         mData[0][2] = sin(radians);
-        mData[2][0] = asin(radians);
+        mData[2][0] = -+sin(radians);
         mData[2][2] = cos(radians);
         break;
     case Axis::RotZ:
-        cout << "Z Case executed";
         mData[0][0] = cos(radians);
-        mData[0][1] = asin(radians);
+        mData[0][1] = -+sin(radians);
         mData[1][1] = sin(radians);
         mData[1][1] = cos(radians);
         break;
@@ -176,6 +188,7 @@ static Matrix Rotation(double radians, Axis rotation)
     }
 
     rotMatrix.setData(mData);
+    rotMatrix.print();
     return rotMatrix;
 }
 

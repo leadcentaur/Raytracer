@@ -6,7 +6,7 @@
 #include "features/display.h"
 #include "features/color.h"
 #include "features/matrix.h"
-#include "fpclass.h"
+#include "util/fpclass.h"
 #include <Windows.h>
 #include <stdio.h>
 #include <math.h>
@@ -96,6 +96,8 @@ std::vector <std::vector<T>> MultiplyM(std::vector <std::vector<T>> &a, std::vec
 }
 
 int main(int argc, char** argv){
+
+    auto start = high_resolution_clock::now();
     vector<vector<int>> z = {
         {1,2,6},
         {-5,8,-4},
@@ -122,30 +124,14 @@ int main(int argc, char** argv){
     }; 
 
     Vector p1 = Vector(0,1,0,POINT_FLAG);
-    Matrix hQy = Rotation(M_PI / 4, Axis::RotY);
-    Matrix fQy = Rotation(M_PI / 2, Axis::RotY);
-
-    Matrix hQx = Rotation(M_PI / 4, Axis::RotX);
-    Matrix fQx = Rotation(M_PI / 2, Axis::RotX);
-
-    Matrix hQz = Rotation(M_PI / 4, Axis::RotZ);
-    Matrix fQz = Rotation(M_PI / 2, Axis::RotZ);
-
-    Vector r4 = fQz * p1;
+    Matrix hQY = Rotation(M_PI / 4, Axis::RotZ);
+    Vector r4 = hQY * p1;
     r4.print();
 
-    double x, y, z;
-    cout << "Testing z = 1/0\n";
-    // cannot set x = 1/0 directly or would produce compile error.
-    cout << "z = " << x/y << "\n";
-    cout << " _fpclass(z) = " << FPClass(z) << "\n";
-
-    auto start = high_resolution_clock::now();
-    auto stop = high_resolution_clock::now(); 
- 
+    auto stop = high_resolution_clock::now();  
     auto duration = duration_cast<microseconds>(stop - start);
  
-    cout << "Time taken by function: "
+    cout << "\nTime taken by function: "
          << duration.count() << " microseconds" << endl;
     // Display display;
     // display.initDisplay();
