@@ -11,11 +11,15 @@
 #include <stdio.h>
 #include <math.h>
 
+#ifndef _INCL_GUARD
+#define _INCL_GUARD
+#endif
+
 #define SCREEN_WIDTH 900
 #define SCREEN_HEIGHT 550
+#define PI M_PI
 
 #define _USE_MATH_DEFINES
-#define P_2 1.570796
 
 using namespace std;
 using namespace std::chrono;
@@ -123,12 +127,20 @@ int main(int argc, char** argv){
         {-3,2},
     }; 
 
-    Vector p1 = Vector(2,3,4,POINT_FLAG);
-    Matrix hQY = Rotation(M_PI / 4, Axis::RotZ);
-    Vector r4 = hQY * p1;
+    // chaning transformations example
+    // rotating the teapot right side up
+    Matrix A = Rotation(PI / 2, Axis::RotX);
+    // teapot = A * Teapot
+    A.print();
 
-    // Transvection(Vector(2,3,4,1), 0,0,0,0,0,1).print();
-    Vector(2,3,4,1).Transvection(0,0,0,0,0,1).print();
+    // next make the tea pot 5x larger
+    Matrix B = Scaling(Vector(5,5,5,0));
+    // teapot = B * teapot
+    B.print();
+
+    //finally, move the teapot onto a table
+    Matrix C = Translation(Vector(10,5,7,0));
+    // teapot = C * Teapot
 
     auto stop = high_resolution_clock::now();  
     auto duration = duration_cast<microseconds>(stop - start);

@@ -1,12 +1,15 @@
 #include <cmath>
 #include <iostream>
 #include "assert.h"
-#include "matrix.h"
 #include <vector>
 #include <tuple>
 #include <chrono>
 #include <algorithm>
-#include <functional> 
+#include <functional>
+
+#ifndef _INCL_GUARD
+#define _INCL_GUARD
+#endif
 
 using namespace std;
 
@@ -62,6 +65,7 @@ class Vector {
         vector<int> FromVec3();
         Vector Transvection(double Xy, double Xz, double Yx, double Yz, double Zx, double Zy);
         friend class Matrix;
+
 };
 
 float Vector::magnitude() { return sqrt((*this)*(*this)); }
@@ -73,9 +77,6 @@ Vector Vector::Transvection(double Xy, double Xz, double Yx, double Yz, double Z
     auto y = this->y;
     auto z = this->z;
 
-    Matrix i = Identity();
-    auto data = i.getData();
-    
     double _Xy = Xy * y;
     x += _Xy;
     double _Xz = Xz * z;
@@ -88,6 +89,10 @@ Vector Vector::Transvection(double Xy, double Xz, double Yx, double Yz, double Z
     z += _Zx;
     double _Zy = Zy * y;
     z += _Zy;
+
+    this->x = x;
+    this->y = y;
+    this->z = z;
 
     return *this;
 }

@@ -11,6 +11,11 @@
 #include <complex>
 #include <cfloat>
 
+#define PI M_PI
+#ifndef _INCL_GUARD
+#define _INCL_GUARD
+#endif
+
 using namespace std;
 enum Axis {RotX, RotY, RotZ};
 
@@ -62,8 +67,8 @@ class Matrix {
         void printDouble() const;
         friend class Vector;
 };
-//! will need to include as utility function
 
+//! will need to include as utility function
 string FPClass(double x)
 {
     int i = _fpclass(x);
