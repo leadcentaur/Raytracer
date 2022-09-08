@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <chrono>
-#include "features/operations.h"
+#include "features/vec.h"
 #include "features/display.h"
 #include "features/color.h"
 #include "features/matrix.h"
@@ -123,10 +123,12 @@ int main(int argc, char** argv){
         {-3,2},
     }; 
 
-    Vector p1 = Vector(0,1,0,POINT_FLAG);
+    Vector p1 = Vector(2,3,4,POINT_FLAG);
     Matrix hQY = Rotation(M_PI / 4, Axis::RotZ);
     Vector r4 = hQY * p1;
-    r4.print();
+
+    // Transvection(Vector(2,3,4,1), 0,0,0,0,0,1).print();
+    Vector(2,3,4,1).Transvection(0,0,0,0,0,1).print();
 
     auto stop = high_resolution_clock::now();  
     auto duration = duration_cast<microseconds>(stop - start);

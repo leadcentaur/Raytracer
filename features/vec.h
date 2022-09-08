@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include "assert.h"
+#include "matrix.h"
 #include <vector>
 #include <tuple>
 #include <chrono>
@@ -59,9 +60,37 @@ class Vector {
 	    Vector cross(const Vector& a);
         Vector ToVec3(vector<int> &v);
         vector<int> FromVec3();
+        Vector Transvection(double Xy, double Xz, double Yx, double Yz, double Zx, double Zy);
+        friend class Matrix;
 };
 
 float Vector::magnitude() { return sqrt((*this)*(*this)); }
+
+//! Transvection <--> Shearing
+Vector Vector::Transvection(double Xy, double Xz, double Yx, double Yz, double Zx, double Zy)
+{   
+    auto x = this->x;
+    auto y = this->y;
+    auto z = this->z;
+
+    Matrix i = Identity();
+    auto data = i.getData();
+    
+    double _Xy = Xy * y;
+    x += _Xy;
+    double _Xz = Xz * z;
+    x += _Xz;
+    double _Yz = Yz * z;
+    y += _Yz;
+    double _Yx = Yx * x;
+    y += _Yx; 
+    double _Zx = Zx * x;
+    z += _Zx;
+    double _Zy = Zy * y;
+    z += _Zy;
+
+    return *this;
+}
 
 Vector Vector::ToVec3(vector<int> &v)
 {

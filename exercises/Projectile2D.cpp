@@ -3,7 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include <chrono>
-#include "features/operations.h"
+#include "features/vec.h"
 #include "features/display.h"
 #include "features/color.h"
 #include <Windows.h>

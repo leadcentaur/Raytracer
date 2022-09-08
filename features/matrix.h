@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <complex>
-#include <cfloat>\
+#include <cfloat>
 
 using namespace std;
 enum Axis {RotX, RotY, RotZ};
@@ -60,6 +60,7 @@ class Matrix {
         
         void print() const;
         void printDouble() const;
+        friend class Vector;
 };
 //! will need to include as utility function
 
@@ -106,10 +107,7 @@ Vector Matrix::operator*(const Vector &v) const{
   
     vector<double> res = {v.x, v.y, v.z, v.w};
     vector<double> result = {0,0,0,0};
-    vector<vector<double>> data = this->getData();
-
-    this->print();
-    
+    vector<vector<double>> data = this->getData();    
     for (auto j = 0; j < mCols; ++j) {
         for (auto k = 0; k < mCols; ++k) {
             result[j] += data[j][k] * (res[k]);
@@ -119,7 +117,7 @@ Vector Matrix::operator*(const Vector &v) const{
     return Vector(result[0],result[1],result[2],result[3]);
 }
 
-static Matrix Identity(int nRows = 4, int nCols = 4, int value = 0)
+Matrix Identity(int nRows = 4, int nCols = 4, int value = 0)
 {   vector<vector<double>> init = {
         {0,0,0,0},
         {0,0,0,0},
@@ -134,11 +132,6 @@ static Matrix Identity(int nRows = 4, int nCols = 4, int value = 0)
     }
     identity.setData(data);
     return identity;
-}
-
-bool isNumber(long double number)
-{
-    return (number == number);
 }
 
 //! translation function - takes a vector (x,y,z,w)
@@ -188,7 +181,6 @@ static Matrix Rotation(double radians, Axis rotation)
     }
 
     rotMatrix.setData(mData);
-    rotMatrix.print();
     return rotMatrix;
 }
 

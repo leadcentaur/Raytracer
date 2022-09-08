@@ -71,6 +71,7 @@
         "xlocmes": "cpp",
         "xtree": "cpp",
         "resumable": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "cfloat": "cpp"
     }
 }
