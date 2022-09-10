@@ -81,7 +81,7 @@ inline bool isinf(T value) {
 template <class T>
 std::vector <std::vector<T>> MultiplyM(std::vector <std::vector<T>> &a, std::vector <std::vector<T>> &b)
 {
-    const int n = a.size();     // a rows
+    const int n = a.size();     // a rows 
     const int m = a[0].size();  // a cols
     const int p = b[0].size();  // b cols
 
@@ -102,52 +102,74 @@ std::vector <std::vector<T>> MultiplyM(std::vector <std::vector<T>> &a, std::vec
 int main(int argc, char** argv){
 
     auto start = high_resolution_clock::now();
-    vector<vector<int>> z = {
-        {1,2,6},
-        {-5,8,-4},
-        {2,6,4}
-    };
 
-    vector<vector<double>> a = {
-        {8,-5,9,2},
-        {7,5,6,1},
-        {-6,0,9,6},
-        {-3,0,-9,-4}
-    };
+    if(SDL_Init(SDL_INIT_VIDEO) < 0){
+        printf("Error: SDL failed to initialize\nSDL Error: '%s'\n", SDL_GetError());
+        std::cout << "Starting sdlc";
+        return 1;
+    }
 
-    vector<vector<double>> b = {
-        {9,3,0,9},
-        {-5,-2,-6,-3},
-        {-4,9,6,4},
-        {-7,6,6,2}
-    };
+    //Create the window 
+    SDL_Window *window = SDL_CreateWindow("SLD test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+    if(!window){
+        printf("Error: Failed to open window\nSDL Error: '%s'\n", SDL_GetError());
+        return 1;
+    }
 
-     vector<vector<double>> dm = {
-        {1,5},
-        {-3,2},
-    }; 
+    //Create the renderer
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if(!renderer){
+        printf("Error: Failed to create renderer\nSDL Error: '%s'\n", SDL_GetError());
+        return 1;
+    }
 
-    // chaning transformations example
-    // rotating the teapot right side up
-    Matrix A = Rotation(PI / 2, Axis::RotX);
-    // teapot = A * Teapot
-    A.print();
+    /*
+        Need to flip the y vlaue from positive to negative,
+        this is because the origin starts at 0,0 which is in the top left of the screen.
+        there for to increases the height of the projectile we substract.
+    */
 
-    // next make the tea pot 5x larger
-    Matrix B = Scaling(Vector(5,5,5,0));
-    // teapot = B * teapot
-    B.print();
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
 
-    //finally, move the teapot onto a table
-    Matrix C = Translation(Vector(10,5,7,0));
-    // teapot = C * Teapot
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 
+    // SDL_RenderDrawLine(renderer, 320, 200, 300, 240);
+    //             SDL_RenderDrawLine(renderer, 300, 240, 340, 240);
+    //             SDL_RenderDrawLine(renderer, 340, 240, 320, 200);
+
+  
+
+    // up is - down is +
+    Vector origin = Vector(450, 275,0); //p(0,0,0)
+    cout << "\n\nThe clock origin is located at: (x,y)=" << "(" << origin.x << "," << 
+        " " << origin.y << ")\n\n";
+    SDL_RenderDrawPoint(renderer, origin.x, origin.y);
+
+    //Let the x component be the x pixel and z be the y pixel
+    int TweleveY = origin.y - int(0.25 * SCREEN_HEIGHT);
+    cout << "Tweleve y value is: " << int(TweleveY) << '\n';
+    Vector hourTwelevePos = Vector(450, 0,TweleveY,1);
+    SDL_RenderDrawPoint(renderer,hourTwelevePos.x, hourTwelevePos.y);
+
+    //3 O'clock position is located at
+    int 3origin = origin.x
+
+    //Rotating the point from the 12 o'clock position to the 3 o'clock position
+    Matrix rotA = Rotation(3 * PI / 6, Axis::RotY);
+
+    SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+    SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
+    SDL_SaveBMP(sshot, "ss.bmp");
+    SDL_FreeSurface(sshot);
+    
+    return 0;
     auto stop = high_resolution_clock::now();  
     auto duration = duration_cast<microseconds>(stop - start);
  
     cout << "\nTime taken by function: "
          << duration.count() << " microseconds" << endl;
-    // Display display;
-    // display.initDisplay();
+
+    return 0;
 }
 

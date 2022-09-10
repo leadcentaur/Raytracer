@@ -94,3 +94,19 @@
 //     // Matrix inverseHalfQuarter = halfQuarter2.Inverse();
 //     // Vector resInv = inverseHalfQuarter * p2;
 //     resInv.print();
+
+
+//  // chaning transformations example
+//     // rotating the teapot right side up
+//     Matrix A = Rotation(PI / 2, Axis::RotX);
+//     // teapot = A * Teapot
+//     A.print();
+
+//     // next make the tea pot 5x larger
+//     Matrix B = Scaling(Vector(5,5,5,0));
+//     // teapot = B * teapot
+//     B.print();
+
+//     //finally, move the teapot onto a table
+//     Matrix C = Translation(Vector(10,5,7,0));
+//     // teapot = C * Teapot
