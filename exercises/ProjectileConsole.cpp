@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <iomanip>
-#include "features/operations.h"
+#include "features/vec.h"
 #include "features/display.h"
 
 struct Projectile {

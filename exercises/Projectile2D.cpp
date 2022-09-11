@@ -30,7 +30,7 @@ Projectile* tick(Environment* env, Projectile* proj) {
 }
        
 
-int Display::initDisplay() {
+int Projectile2D() {
 
     // Initialize rendering with error handling
     if(SDL_Init(SDL_INIT_VIDEO) < 0){

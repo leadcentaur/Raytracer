@@ -29,6 +29,11 @@ struct Projectile {
     Vector* velocity;
 };
 
+struct Origin{
+    int x;
+    int y;
+};
+
 struct Environment {
     Vector* gravity;
     Vector* wind;
@@ -39,43 +44,16 @@ Projectile* tick(Environment* env, Projectile* proj) {
     *proj->velocity = *proj->velocity + *env->gravity + *env->wind;
     return proj;
 }
-       
-
-int Display::initDisplay() {
-
-    if(SDL_Init(SDL_INIT_VIDEO) < 0){
-        printf("Error: SDL failed to initialize\nSDL Error: '%s'\n", SDL_GetError());
-        std::cout << "Starting sdlc";
-        return 1;
-    }
-
-    SDL_Window *window = SDL_CreateWindow("SLD test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-    if(!window){
-        printf("Error: Failed to open window\nSDL Error: '%s'\n", SDL_GetError());
-        return 1;
-    }
-
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if(!renderer){
-        printf("Error: Failed to create renderer\nSDL Error: '%s'\n", SDL_GetError());
-        return 1;
-    }
-
-    //create a new matrix
-
-    vector<vector<int>> a = {
-        {2,5,1},
-        {6,7,1},
-        {1,8,1}
-    };
-
-    return 0;
-}
-
+    
 template<typename T>
 inline bool isinf(T value) {
     return std::numeric_limits<T>::has_infinity &&
         value == std::numeric_limits<T>::infinity();
+}
+
+int originNormal(int x, int y){
+    int newX = 0;
+    newX = SCREEN_WIDTH - x;
 }
 
 template <class T>
@@ -138,25 +116,34 @@ int main(int argc, char** argv){
     //             SDL_RenderDrawLine(renderer, 300, 240, 340, 240);
     //             SDL_RenderDrawLine(renderer, 340, 240, 320, 200);
 
-  
-
     // up is - down is +
     Vector origin = Vector(450, 275,0); //p(0,0,0)
     cout << "\n\nThe clock origin is located at: (x,y)=" << "(" << origin.x << "," << 
         " " << origin.y << ")\n\n";
     SDL_RenderDrawPoint(renderer, origin.x, origin.y);
 
-    //Let the x component be the x pixel and z be the y pixel
-    int TweleveY = origin.y - int(0.25 * SCREEN_HEIGHT);
+
+    //12 Oclock code and 6y
+    int TweleveY = int(origin.y - int(0.25 * SCREEN_HEIGHT));
     cout << "Tweleve y value is: " << int(TweleveY) << '\n';
-    Vector hourTwelevePos = Vector(450, 0,TweleveY,1);
-    SDL_RenderDrawPoint(renderer,hourTwelevePos.x, hourTwelevePos.y);
+    Vector hourTwelevePos = Vector(450,0,TweleveY,1);
+    SDL_RenderDrawPoint(renderer,hourTwelevePos.x, hourTwelevePos.z);
+    cout << "\nTweleve O'clock located at [x,y]= " << "(" << hourTwelevePos.x << ", " << hourTwelevePos.z << ")\n";
+    hourTwelevePos.print();
 
-    //3 O'clock position is located at
-    int 3origin = origin.x
+    int sixY = int(origin.y + int(0.25 * SCREEN_HEIGHT));
+    cout << "Tweleve y value is: " << int(sixY) << '\n';
+    Vector hoursixPos = Vector(450,0,sixY,1);
+    SDL_RenderDrawPoint(renderer,hoursixPos.x, hoursixPos.z);
+    cout << "\nTweleve O'clock located at [x,y]= " << "(" << hoursixPos.x << ", " << hoursixPos.z << ")\n";
+    hourTwelevePos.print();
 
-    //Rotating the point from the 12 o'clock position to the 3 o'clock position
-    Matrix rotA = Rotation(3 * PI / 6, Axis::RotY);
+    //1 Oclock code
+    Matrix ra1 = Rotation(1*PI/6, RotY);
+    Vector res1 = ra1 * hourTwelevePos;
+    res1.print();
+    SDL_RenderDrawPoint(renderer,459*0.25-550, 105*0.25+900);
+
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
