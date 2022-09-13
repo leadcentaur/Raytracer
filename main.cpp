@@ -15,8 +15,8 @@
 #define _INCL_GUARD
 #endif
 
-#define SCREEN_WIDTH 900
-#define SCREEN_HEIGHT 550
+#define SCREEN_WIDTH 700
+#define SCREEN_HEIGHT 400
 #define PI M_PI
 
 #define _USE_MATH_DEFINES
@@ -117,7 +117,7 @@ int main(int argc, char** argv){
     //             SDL_RenderDrawLine(renderer, 340, 240, 320, 200);
 
     // up is - down is +
-    Vector origin = Vector(450,0,275,1); //p(0,0,0)
+    Vector origin = Vector(SCREEN_WIDTH/2,0,SCREEN_HEIGHT/2,1); //p(0,0,0)
     cout << "\n\nThe clock origin is located at: (x,y)=" << "(" << origin.x << "," << 
         " " << origin.y << ")\n\n";
     SDL_RenderDrawPoint(renderer, origin.x, origin.z);
@@ -131,93 +131,15 @@ int main(int argc, char** argv){
     cout << "\nTweleve O'clock located at [x,y]= " << "(" << hourTwelevePos.x << ", " << hourTwelevePos.z << ")\n";
    // hourTwelevePos.print();
 
-    int sixY = int(origin.z + int(0.25 * SCREEN_HEIGHT));
-    cout << "six y value is: " << int(sixY) << '\n';
-    Vector hoursixPos = Vector(450,0,sixY,1);
-    // SDL_RenderDrawPoint(renderer,hoursixPos.x, hoursixPos.z);
-    cout << "\n6 O'clock located at [x,y]= " << "(" << hoursixPos.x << ", " << hoursixPos.z << ")\n\n";
-   // hourTwelevePos.print();
+    for (int i = 1; i <= 12; i++){
 
-    //1 Oclock code
-
-
-
-
-    Matrix ra1 = Rotation(3*PI/6, RotY);
-    Vector res1 = ra1 * hourTwelevePos;
-    res1.x = res1.x * 0.25 + origin.x;
-    res1.z = res1.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res1.x, res1.z);
-
-
-    Matrix ra2 = Rotation(2*PI/6, RotY);
-    Vector res2 = ra2 * hourTwelevePos;
-    res2.x = res2.x * 0.25 + origin.x;
-    res2.z = res2.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res2.x, res2.z);
-
-    Matrix ra3 = Rotation(PI/6, RotY);
-    Vector res3 = ra3 * hourTwelevePos;
-    res3.x = res3.x * 0.25 + origin.x;
-    res3.z = res3.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res3.x, res3.z);
-
-    Matrix ra4 = Rotation(4*PI/6, RotY);
-    Vector res4 = ra4 * hourTwelevePos;
-    res4.x = res4.x * 0.25 + origin.x;
-    res4.z = res4.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res4.x, res4.z);
-
-    Matrix ra5 = Rotation(5*PI/6, RotY);
-    Vector res5 = ra5 * hourTwelevePos;
-    res5.x = res5.x * 0.25 + origin.x;
-    res5.z = res5.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res5.x, res5.z);
-
-    Matrix ra6 = Rotation(6*PI/6, RotY);
-    Vector res6 = ra6 * hourTwelevePos;
-    res6.x = res6.x * 0.25 + origin.x;
-    res6.z = res6.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res6.x, res6.z);
-
-    Matrix ra7 = Rotation(7*PI/6, RotY);
-    Vector res7 = ra7 * hourTwelevePos;
-    res7.x = res7.x * 0.25 + origin.x;
-    res7.z = res7.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res7.x, res7.z);
-
-    Matrix ra8 = Rotation(8*PI/6, RotY);
-    Vector res8 = ra8 * hourTwelevePos;
-    res8.x = res8.x * 0.25 + origin.x;
-    res8.z = res8.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res8.x, res8.z);
-
-    Matrix ra9 = Rotation(9*PI/6, RotY);
-    Vector res9 = ra9 * hourTwelevePos;
-    res9.x = res9.x * 0.25 + origin.x;
-    res9.z = res9.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res9.x, res9.z);
-
-    Matrix ra10 = Rotation(10*PI/6, RotY);
-    Vector res10 = ra10 * hourTwelevePos;
-    res10.x = res10.x * 0.25 + origin.x;
-    res10.z = res10.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res10.x, res10.z);
-
-    Matrix ra11 = Rotation(11*PI/6, RotY);
-    Vector res11 = ra11 * hourTwelevePos;
-    res11.x = res11.x * 0.25 + origin.x;
-    res11.z = res11.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res11.x, res11.z);
-
-    Matrix ra12 = Rotation(12*PI/6, RotY);
-    Vector res12 = ra12 * hourTwelevePos;
-    res12.x = res12.x * 0.25 + origin.x;
-    res12.z = res12.z * 0.25 + origin.z;
-    SDL_RenderDrawPoint(renderer,res12.x, res12.z);
-
-
-
+        Matrix rotMatrix = Rotation(i*PI/6, RotY);
+        Vector computed_point = rotMatrix * hourTwelevePos;
+        computed_point.x = computed_point.x * 0.25 + origin.x;
+        computed_point.z = computed_point.z * 0.25 + origin.z;
+    
+        SDL_RenderDrawPoint(renderer,computed_point.x, computed_point.z);
+    }
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
