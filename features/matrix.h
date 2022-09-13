@@ -1,3 +1,6 @@
+#ifndef _INCL_GUARD_MATRIX
+#define _INCL_GUARD_MATRIX
+
 #include <cmath>
 #include <iostream>
 #include "assert.h"
@@ -12,9 +15,6 @@
 #include <cfloat>
 
 #define PI M_PI
-#ifndef _INCL_GUARD
-#define _INCL_GUARD
-#endif
 
 using namespace std;
 enum Axis {RotX, RotY, RotZ};
@@ -306,3 +306,5 @@ void Matrix::print() const
     }
     cout << '\n';
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef _INCL_GUARD_VEC
+#define _INCL_GUARD_VEC
+
 #include <cmath>
 #include <iostream>
 #include "assert.h"
@@ -7,16 +10,15 @@
 #include <algorithm>
 #include <functional>
 
-#ifndef _INCL_GUARD
-#define _INCL_GUARD
-#endif
-
 using namespace std;
 
 static const float EPSILON = 0.00001;
 static const int VEC_FLAG = 0;
 static const int POINT_FLAG = 1;
 static const int TUPLE_SIZE = 4;
+
+#ifndef VEC_H
+#define VEC_H
 
 class Vector {
     public:
@@ -67,6 +69,8 @@ class Vector {
         friend class Matrix;
 
 };
+
+#endif /* GRANDPARENT_H */
 
 float Vector::magnitude() { return sqrt((*this)*(*this)); }
 
@@ -195,3 +199,5 @@ Vector& Vector::operator/=(const float a) {
 
     return *this;
 }
+
+#endif
