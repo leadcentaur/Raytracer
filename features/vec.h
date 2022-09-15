@@ -54,8 +54,8 @@ class Vector {
         
         Vector operator+(const Vector& a) const;
         Vector operator-(const Vector& a) const;
-        Vector& operator*=(const float a);
-        Vector operator*(const float a) const;
+        Vector& operator*=(const double a);
+        Vector operator*(const double a) const;
         float operator*(const Vector& a) const;
         Vector& operator/=(const float a);
 
@@ -164,7 +164,7 @@ Vector Vector::operator-(const Vector& a) const {
     return res;
 }
 
-Vector& Vector::operator*=(const float a) {
+Vector& Vector::operator*=(const double a) {
     this->x*=a;
     this->y*=a;
     this->z*=a;
@@ -173,7 +173,7 @@ Vector& Vector::operator*=(const float a) {
     return *this;
 }
 
-Vector Vector::operator*(const float a) const {
+Vector Vector::operator*(const double a) const {
     Vector res(*this);
     res*=a;
 
