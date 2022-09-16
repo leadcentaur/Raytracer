@@ -12,7 +12,7 @@
 
 using namespace std;
 
-static const float EPSILON = 0.00001;
+static const double EPSILON = 0.00001;
 static const int VEC_FLAG = 0;
 static const int POINT_FLAG = 1;
 static const int TUPLE_SIZE = 4;
@@ -26,22 +26,27 @@ class Vector {
 
         Vector(double px=0, double py=0, double pz=0, double pw=0) : x(px), y(py), z(pz), w(pw)  {}
         
-        bool equal(float a, float b) {return fabs(a - b) < EPSILON;}
+        bool equal(double a, double b) {return fabs(a - b) < EPSILON;}
 
-        float dot(const Vector& a) 
+        double dot(const Vector& a) 
         { 
             return this->x * a.x + this->y * a.y + this->z * a.z + this->w * a.w; 
+        }
+
+        static double dot(const Vector& a, const Vector& b) 
+        { 
+            return a.x * b.x + a.y * b.y + a.z * b.z + a.w * a.w; 
         }
         
         inline void normalize() 
         { 
-            float ivm = 1 / this->magnitude(); 
+            double ivm = 1 / this->magnitude(); 
             this->x*ivm; this->y*ivm; this->z*ivm; this->w*ivm; 
         }
 
         inline void cross() 
         { 
-            float ivm = 1 / this->magnitude(); this->x*ivm; this->y*ivm; this->z*ivm; this->w*ivm; 
+            double ivm = 1 / this->magnitude(); this->x*ivm; this->y*ivm; this->z*ivm; this->w*ivm; 
         }
 
         inline void toInt();
@@ -56,11 +61,11 @@ class Vector {
         Vector operator-(const Vector& a) const;
         Vector& operator*=(const double a);
         Vector operator*(const double a) const;
-        float operator*(const Vector& a) const;
-        Vector& operator/=(const float a);
+        double operator*(const Vector& a) const;
+        Vector& operator/=(const double a);
 
-        float magnitude();
-        float length();
+        double magnitude();
+        double length();
 
 	    Vector cross(const Vector& a);
         Vector ToVec3(vector<int> &v);
@@ -72,7 +77,7 @@ class Vector {
 
 #endif /* GRANDPARENT_H */
 
-float Vector::magnitude() { return sqrt((*this)*(*this)); }
+double Vector::magnitude() { return sqrt((*this)*(*this)); }
 
 //! Transvection <--> Shearing
 Vector Vector::Transvection(double Xy, double Xz, double Yx, double Yz, double Zx, double Zy)
@@ -180,8 +185,8 @@ Vector Vector::operator*(const double a) const {
     return res;
 }
 
-float Vector::operator*(const Vector& a) const {
-    float dot=0.0;	
+double Vector::operator*(const Vector& a) const {
+    double dot=0.0;	
 
     dot+=this->x*a.x;
     dot+=this->y*a.y;
@@ -191,7 +196,7 @@ float Vector::operator*(const Vector& a) const {
     return dot;
 }
 
-Vector& Vector::operator/=(const float a) {
+Vector& Vector::operator/=(const double a) {
     this->x/=a;
     this->y/=a;
     this->z/=a;
