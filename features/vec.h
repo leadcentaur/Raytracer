@@ -12,7 +12,7 @@
 
 using namespace std;
 
-static const double EPSILON = 0.00001;
+static const double EPSILON = 0.0001;
 static const int VEC_FLAG = 0;
 static const int POINT_FLAG = 1;
 static const int TUPLE_SIZE = 4;
@@ -25,8 +25,7 @@ class Vector {
         double x, y, z, w;
 
         Vector(double px=0, double py=0, double pz=0, double pw=0) : x(px), y(py), z(pz), w(pw)  {}
-        
-        bool equal(double a, double b) {return fabs(a - b) < EPSILON;}
+    
 
         double dot(const Vector& a) 
         { 

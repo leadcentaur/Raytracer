@@ -59,7 +59,6 @@ class Matrix {
 
         static Matrix Rotation(double radians, Axis rot);
 
-        //Matrix submatrix(int row, int column) const;
         Matrix fill(int rows, int cols, int val);
         bool canInvert();
         
@@ -67,8 +66,6 @@ class Matrix {
         void printDouble() const;
         friend class Vector;
 };
-
-//! will need to include as utility function
 
 Matrix Matrix::operator*(const Matrix &b) const {
     if (mCols != b.mRows) {

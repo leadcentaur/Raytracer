@@ -32,22 +32,65 @@ class Ray {
         static int Sphere();
 };
 
-void Sphere::setOrigin(Vector origin){ this->origin = origin; }
+template <class T>
+vector<int> aggregatePoints( std::initializer_list<T> list )
+{   
+    vector<int> iPoints;
+    for( auto elem : list )
+    {
+        iPoints.push_back(elem[0].t);
+        iPoints.push_back(elem[1].t);
+    }
+    return iPoints;
+}
 
-Vector Sphere::getOrigin() { return this->origin; }
+struct Intersection
+{
+    int t;
+    Sphere sphere;
+};
 
-void Ray::setDirection(Vector dir){ this->direction = dir; }
+struct Intersections 
+{
+    vector<vector<Intersection>> is;
+};
 
-Vector Ray::getOrigin() { return this->origin; }
+void Sphere::setOrigin(Vector origin)
+{ 
+    this->origin = origin; 
+}
 
-Vector Ray::getDirection() { return this->direction; }
+Vector Sphere::getOrigin()
+{ 
+    return this->origin; 
+}
 
-int Sphere::getSphereID() { return this->sphereID; }
+void Ray::setDirection(Vector dir)
+{ 
+    this->direction = dir; 
+}
 
-//the meat and potatoes
-vector<double> Intersect(Sphere s, Ray r)
+Vector Ray::getOrigin()
+{ 
+    return this->origin; 
+}
+
+Vector Ray::getDirection()
+{ 
+    return this->direction; 
+}
+
+int Sphere::getSphereID() 
+{ 
+    return this->sphereID; 
+}
+
+bool isEqual(double a, double b) {return std::abs(a - b) <= EPSILON * std::abs(a); }
+
+vector<Intersection> Intersect(Sphere s, Ray r)
 {   
     int sphereRadius = 1;
+
     Vector rayOrigin = r.getOrigin();
     Vector sphereOrigin = s.getOrigin();
     Vector rayDireciton = r.getDirection();
@@ -55,16 +98,43 @@ vector<double> Intersect(Sphere s, Ray r)
     Vector sphereToRay = rayOrigin - sphereOrigin;
     double a = Vector::dot(rayDireciton, rayDireciton);
     double b = Vector::dot(r.getDirection(), sphereToRay) * 2;
+
+    // I think the -1 needs ot be changed to the spehre radii
     double c = Vector::dot(sphereToRay, sphereToRay) - 1;
-
     double discriminant = pow(b,2) - 4 * a * c;
-    if (discriminant < 0) {
-        exit(1);
+    if (discriminant > -1.0 && discriminant < 1.0){
+        discriminant = 0;
     }
-    double t1 = (-1*b - sqrt(discriminant)) / (2*a);
-    double t2 = (-1*b + sqrt(discriminant)) / (2*a);
-    return {abs(t1), abs(t2)};
+    if (discriminant < 0) {
+        cout << "The ray misses the sphere.";
+        return {};
+    }
 
+    double t1 = (-b - sqrt(discriminant)) / (2*a);
+    double t2 = (-b + sqrt(discriminant)) / (2*a);
+
+    Intersection iSectA, iSectB;
+    iSectA.sphere = s, iSectB.sphere = s;
+    iSectA.t = t1, iSectB.t = t2;
+
+    return vector<Intersection>{iSectA,iSectB};
+}
+
+
+Intersection hit(Intersections isx)
+{   
+    int lowest = isx.is[0][0].t;
+
+
+    for(int i = 0; i < isx.is.size(); i++){
+        for (int j = 0; j < isx.is.size();j++) {
+            if (isx.is[i][j].t < lowest) {
+                lowest = isx.is[i][j].t;
+                return isx.is[i][j];
+            }
+        }
+    }
+    return isx.is[0][0];
 }
 
 void Sphere::setSphereID()

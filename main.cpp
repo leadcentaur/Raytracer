@@ -22,7 +22,9 @@
 using namespace std;
 using namespace std::chrono;
 
-int main(int argc, char** argv){
+
+
+int main(int argc, char *argv[]){ 
 
     auto start = high_resolution_clock::now();
 
@@ -59,9 +61,35 @@ int main(int argc, char** argv){
 
 
     Sphere s1 = Sphere();
-    Ray ray = Ray(Vector(0,0,5), Vector(0,0,1));
-    vector<double> c = Intersect(s1, ray);
-    cout << c[1];
+    Intersections iSections;
+
+    Ray rayA = Ray(Vector(0,0,0), Vector(0,0,1));
+    vector<Intersection> i1 = Intersect(s1, rayA);
+   //cout << "Intersections for Sphere " << i1[0].sphere.getSphereID() << " are: " << i1[0].t << "  and " << i1[1].t << '\n';
+
+    Ray rayB = Ray(Vector(0,0,-5), Vector(0,0,1));
+    vector<Intersection> i2 = Intersect(s1, rayB);
+
+    Ray rayC = Ray(Vector(0,0,-5), Vector(0,0,1));
+    vector<Intersection> i3 = Intersect(s1, rayC);
+
+    vector<vector<Intersection>> w = {i1,i2};
+    iSections.is = w;
+
+    Intersection val = hit(iSections);
+
+    // i1.insert( i1.end(), i2.begin(), i2.end() );
+    vector<int> points = aggregatePoints({i1, i2, i3});
+
+    for (int x = 0; x < points.size(); x++){
+        cout << points[x];
+    }
+
+
+    //create a function that aggregate n number if intersec objects
+    //this function needs to be able to take n number of parameters
+
+    //func(i1, i2);
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
