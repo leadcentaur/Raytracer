@@ -32,16 +32,37 @@ class Ray {
         static int Sphere();
 };
 
+//we need to return a sorted collection of intersection objects by smallest to largest t size.
+//will return an interseciton object
+
 template <class T>
-vector<int> aggregatePoints( std::initializer_list<T> list )
+int aggregatePoints( std::initializer_list<T> list )
 {   
-    vector<int> iPoints;
+    int lowest;
+    vector<T> vIntersecs = {};
+    vector<int> vInts;
+
+
     for( auto elem : list )
-    {
-        iPoints.push_back(elem[0].t);
-        iPoints.push_back(elem[1].t);
+    {   
+       if (elem[0].t < lowest){
+        lowest = elem[0].t;
+        vInts.push_back(lowest);
+
+       }
+       if (elem[1].t < lowest){
+
+        lowest = elem[1].t;
+        vInts.push_back(lowest);
+
+       }
     }
-    return iPoints;
+
+    for (auto x : vInts){
+        cout << "v: " << x << '\n';
+    }
+
+    return 1;
 }
 
 struct Intersection
@@ -121,20 +142,9 @@ vector<Intersection> Intersect(Sphere s, Ray r)
 }
 
 
-Intersection hit(Intersections isx)
+Intersection hit(Intersections xs)
 {   
-    int lowest = isx.is[0][0].t;
 
-
-    for(int i = 0; i < isx.is.size(); i++){
-        for (int j = 0; j < isx.is.size();j++) {
-            if (isx.is[i][j].t < lowest) {
-                lowest = isx.is[i][j].t;
-                return isx.is[i][j];
-            }
-        }
-    }
-    return isx.is[0][0];
 }
 
 void Sphere::setSphereID()

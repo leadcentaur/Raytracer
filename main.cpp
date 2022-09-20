@@ -63,33 +63,47 @@ int main(int argc, char *argv[]){
     Sphere s1 = Sphere();
     Intersections iSections;
 
-    Ray rayA = Ray(Vector(0,0,0), Vector(0,0,1));
-    vector<Intersection> i1 = Intersect(s1, rayA);
-   //cout << "Intersections for Sphere " << i1[0].sphere.getSphereID() << " are: " << i1[0].t << "  and " << i1[1].t << '\n';
+    // Ray rayA = Ray(Vector(0,0,0), Vector(0,0,1));
+    // vector<Intersection> i1 = Intersect(s1, rayA);
+    // cout << "Intersections for Sphere " << i1[0].sphere.getSphereID() << " are: " << i1[0].t << "  and " << i1[1].t << '\n';
 
-    Ray rayB = Ray(Vector(0,0,-5), Vector(0,0,1));
-    vector<Intersection> i2 = Intersect(s1, rayB);
+    // Ray rayB = Ray(Vector(0,0,-5), Vector(0,0,1));
+    // vector<Intersection> i2 = Intersect(s1, rayB);
+    // cout << "Intersections for Sphere " << i2[0].sphere.getSphereID() << " are: " << i2[0].t << "  and " << i2[1].t << '\n';
 
-    Ray rayC = Ray(Vector(0,0,-5), Vector(0,0,1));
-    vector<Intersection> i3 = Intersect(s1, rayC);
-
-    vector<vector<Intersection>> w = {i1,i2};
-    iSections.is = w;
-
-    Intersection val = hit(iSections);
-
-    // i1.insert( i1.end(), i2.begin(), i2.end() );
-    vector<int> points = aggregatePoints({i1, i2, i3});
-
-    for (int x = 0; x < points.size(); x++){
-        cout << points[x];
-    }
+    // Ray rayC = Ray(Vector(0,0,-5), Vector(0,0,1));
+    // vector<Intersection> i3 = Intersect(s1, rayC);
 
 
-    //create a function that aggregate n number if intersec objects
-    //this function needs to be able to take n number of parameters
+    Intersection a1, a2, a3, a4;
+    a1.sphere = s1;
+    a2.sphere = s1;
+    a1.t = -1;
+    a2.t = 1;
 
-    //func(i1, i2);
+    a3.sphere = s1;
+    a4.sphere = s1;
+    a3.t = -1;
+    a4.t = 1;
+
+    int results = aggregatePoints({a1, a2, a3, a4});
+
+    // vector<Intersection> i1 = {a1,a2};
+
+    // vector<vector<Intersection>> w = {i1};
+    // iSections.is = w;
+
+    // Intersection val = hit(iSections);
+    // cout << "The lowest intersection object has a t value of: " << val.t << '\n';
+
+
+
+    // for (int x = 0; x < points.size(); x++){
+    //     cout << points[x] << '\n';
+    // }
+
+
+
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
