@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <iomanip>
+#include <map>
 #include <chrono>
 #include "features/vec.h"
 #include "features/display.h"
@@ -63,30 +64,46 @@ int main(int argc, char *argv[]){
     Sphere s1 = Sphere();
     Intersections iSections;
 
-    // Ray rayA = Ray(Vector(0,0,0), Vector(0,0,1));
-    // vector<Intersection> i1 = Intersect(s1, rayA);
-    // cout << "Intersections for Sphere " << i1[0].sphere.getSphereID() << " are: " << i1[0].t << "  and " << i1[1].t << '\n';
+    Ray rayA = Ray(Vector(0,0,0), Vector(0,0,1));
+    vector<Intersection> ic1 = Intersect(s1, rayA);
+    cout << "Intersections for Sphere " << ic1[0].sphere.getSphereID() << " are: " << ic1[0].t << "  and " << ic1[1].t << '\n';
 
-    // Ray rayB = Ray(Vector(0,0,-5), Vector(0,0,1));
-    // vector<Intersection> i2 = Intersect(s1, rayB);
-    // cout << "Intersections for Sphere " << i2[0].sphere.getSphereID() << " are: " << i2[0].t << "  and " << i2[1].t << '\n';
+    Ray rayB = Ray(Vector(0,0,-5), Vector(0,0,1));
+    vector<Intersection> ic2 = Intersect(s1, rayB);
+    cout << "Intersections for Sphere " << ic2[0].sphere.getSphereID() << " are: " << ic2[0].t << "  and " << ic2[1].t << '\n';
 
-    // Ray rayC = Ray(Vector(0,0,-5), Vector(0,0,1));
-    // vector<Intersection> i3 = Intersect(s1, rayC);
+    //Each call to the intersection function returners two
+    // or possibly one intersection record output as per ic1[0] and [1] index referencing.
+    Ray rayC = Ray(Vector(0,0,-5), Vector(0,0,1));
+    vector<Intersection> ic3 = Intersect(s1, rayC);
+
+    Intersection i1 = ic1[0];
+    i1.t = 1;
+
+    Intersection i2 = ic1[1];
+    i2.t = 23;
+    
+    Intersection i3 = ic2[0];
+    i3.t = 4;
+   
+    Intersection i4 = ic2[1];
+    i4.t = -6;
+
+    Intersection i5 = ic3[0];
+    i5.t = -3;
+ 
+    Intersection i6 = ic3[1];
+    i6.t = 10;
+    
 
 
-    Intersection a1, a2, a3, a4;
-    a1.sphere = s1;
-    a2.sphere = s1;
-    a1.t = -1;
-    a2.t = 1;
+    vector<Intersection> results = aggregatePoints({i3, i2, i1, i4, i5, i6});
+    for (auto x : results){
+        cout << x.t << '\n';
+    }
 
-    a3.sphere = s1;
-    a4.sphere = s1;
-    a3.t = -1;
-    a4.t = 1;
 
-    int results = aggregatePoints({a1, a2, a3, a4});
+    //cout << "The lowest result: " << results[0].t;
 
     // vector<Intersection> i1 = {a1,a2};
 

@@ -31,50 +31,26 @@ class Ray {
         Vector getOrigin();
         static int Sphere();
 };
-
-//we need to return a sorted collection of intersection objects by smallest to largest t size.
-//will return an interseciton object
-
-template <class T>
-int aggregatePoints( std::initializer_list<T> list )
-{   
-    int lowest;
-    vector<T> vIntersecs = {};
-    vector<int> vInts;
-
-
-    for( auto elem : list )
-    {   
-       if (elem[0].t < lowest){
-        lowest = elem[0].t;
-        vInts.push_back(lowest);
-
-       }
-       if (elem[1].t < lowest){
-
-        lowest = elem[1].t;
-        vInts.push_back(lowest);
-
-       }
-    }
-
-    for (auto x : vInts){
-        cout << "v: " << x << '\n';
-    }
-
-    return 1;
-}
-
 struct Intersection
 {
     int t;
     Sphere sphere;
+
+    bool operator<(const Intersection& a){
+        return t < a.t;
+    }
 };
 
-struct Intersections 
-{
-    vector<vector<Intersection>> is;
-};
+template <class T>
+vector<T> aggregatePoints( std::initializer_list<T> list )
+{   
+    vector<T> vInters = {};
+    for (auto elem : list) {
+        vInters.push_back(elem);
+    }
+    std::sort(vInters.begin(), vInters.end());
+    return vInters;
+}
 
 void Sphere::setOrigin(Vector origin)
 { 
