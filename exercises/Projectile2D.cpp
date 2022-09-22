@@ -60,11 +60,6 @@ int Projectile2D() {
     //projectile->point = new Vector(0.0, 1, 0.0);
     projectile->point = new Vector(0, 550, 0.0);
 
-    /*
-        Need to flip the y vlaue from positive to negative,
-        this is because the origin starts at 0,0 which is in the top left of the screen.
-        there for to increases the height of the projectile we substract.
-    */
     projectile->velocity = new Vector(11.5, -9.6, 0);
     *projectile->velocity * 51.25; 
 

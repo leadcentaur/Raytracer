@@ -62,7 +62,6 @@ int main(int argc, char *argv[]){
 
 
     Sphere s1 = Sphere();
-    Intersections iSections;
 
     Ray rayA = Ray(Vector(0,0,0), Vector(0,0,1));
     vector<Intersection> ic1 = Intersect(s1, rayA);
@@ -78,31 +77,28 @@ int main(int argc, char *argv[]){
     vector<Intersection> ic3 = Intersect(s1, rayC);
 
     Intersection i1 = ic1[0];
-    i1.t = 1;
+    i1.t = -1;
 
     Intersection i2 = ic1[1];
-    i2.t = 23;
+    i2.t = -1;
     
-    Intersection i3 = ic2[0];
-    i3.t = 4;
+    // Intersection i3 = ic2[0];
+    // i3.t = -3;
    
-    Intersection i4 = ic2[1];
-    i4.t = -6;
+    // Intersection i4 = ic2[1];
+    // i4.t = 2;
 
-    Intersection i5 = ic3[0];
-    i5.t = -3;
- 
-    Intersection i6 = ic3[1];
-    i6.t = 10;
-    
+    vector<Intersection> results = aggregatePoints({i2, i1});
 
+    cout << "Front: " << results.front().t << '\n';
+    cout << "Back: " << results.back().t << "\n\n";
 
-    vector<Intersection> results = aggregatePoints({i3, i2, i1, i4, i5, i6});
     for (auto x : results){
         cout << x.t << '\n';
     }
 
-
+    Intersection val = hit(results);
+    cout << "\nHit returned: " << val.t << "\n";
     //cout << "The lowest result: " << results[0].t;
 
     // vector<Intersection> i1 = {a1,a2};
@@ -110,7 +106,6 @@ int main(int argc, char *argv[]){
     // vector<vector<Intersection>> w = {i1};
     // iSections.is = w;
 
-    // Intersection val = hit(iSections);
     // cout << "The lowest intersection object has a t value of: " << val.t << '\n';
 
 

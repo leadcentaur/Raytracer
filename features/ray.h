@@ -118,9 +118,16 @@ vector<Intersection> Intersect(Sphere s, Ray r)
 }
 
 
-Intersection hit(Intersections xs)
+Intersection hit(vector<Intersection> vIntersects)
 {   
-
+    bool isNeg = false;
+    for (int i = 0; i < vIntersects.size(); i++){
+           isNeg = true ? vIntersects[i].t < 0 : false;
+           if (!isNeg){
+                return vIntersects[i];
+           } 
+    }
+    return vIntersects.front();
 }
 
 void Sphere::setSphereID()
