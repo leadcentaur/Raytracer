@@ -19,7 +19,7 @@ class Sphere {
 };
 
 class Ray {
-    private:
+    private:    
         Vector origin;
         Vector direction;
         friend Sphere;
@@ -50,6 +50,10 @@ vector<T> aggregatePoints( std::initializer_list<T> list )
     }
     std::sort(vInters.begin(), vInters.end());
     return vInters;
+}
+
+Ray transform(Ray r1, Matrix r2){
+    
 }
 
 void Sphere::setOrigin(Vector origin)
@@ -112,7 +116,7 @@ vector<Intersection> Intersect(Sphere s, Ray r)
 
     Intersection iSectA, iSectB;
     iSectA.sphere = s, iSectB.sphere = s;
-    iSectA.t = t1, iSectB.t = t2;
+    iSectA.t = t1, iSectB.t = t2;   
 
     return vector<Intersection>{iSectA,iSectB};
 }
