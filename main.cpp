@@ -61,61 +61,27 @@ int main(int argc, char *argv[]){
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 
 
+    // Translating a ray
     Sphere s1 = Sphere();
+    s1.getTransformation().print();
+    Ray rx = Ray(Vector(1,2,3,1), Vector(0,1,0,0));
+    Matrix tm = Translation(Vector(3,4,5,1));
+    Ray ra = transform(rx, tm);
 
-    Ray rayA = Ray(Vector(0,0,0), Vector(0,0,1));
-    vector<Intersection> ic1 = Intersect(s1, rayA);
-    cout << "Intersections for Sphere " << ic1[0].sphere.getSphereID() << " are: " << ic1[0].t << "  and " << ic1[1].t << '\n';
+    cout << "Ra Origin: ";
+    ra.getOrigin().print();
 
-    Ray rayB = Ray(Vector(0,0,-5), Vector(0,0,1));
-    vector<Intersection> ic2 = Intersect(s1, rayB);
-    cout << "Intersections for Sphere " << ic2[0].sphere.getSphereID() << " are: " << ic2[0].t << "  and " << ic2[1].t << '\n';
+    cout << "Ra Directon: ";
+    ra.getDirection().print();
+    cout << '\n';
 
-    //Each call to the intersection function returners two
-    // or possibly one intersection record output as per ic1[0] and [1] index referencing.
-    Ray rayC = Ray(Vector(0,0,-5), Vector(0,0,1));
-    vector<Intersection> ic3 = Intersect(s1, rayC);
-
-    Intersection i1 = ic1[0];
-    i1.t = -1;
-
-    Intersection i2 = ic1[1];
-    i2.t = -1;
+    //Intersecting a ray with a sphere
+    Sphere s2 = Sphere();
+    Ray rp = Ray(Vector(0,0,5,1), Vector(0,0,1,0));
+    vector<Intersection> results = Intersect(s2, rp);
+    cout << results[1].t;
     
-    // Intersection i3 = ic2[0];
-    // i3.t = -3;
-   
-    // Intersection i4 = ic2[1];
-    // i4.t = 2;
-
-    vector<Intersection> results = aggregatePoints({i2, i1});
-
-    cout << "Front: " << results.front().t << '\n';
-    cout << "Back: " << results.back().t << "\n\n";
-
-    for (auto x : results){
-        cout << x.t << '\n';
-    }
-
-    Intersection val = hit(results);
-    cout << "\nHit returned: " << val.t << "\n";
-    //cout << "The lowest result: " << results[0].t;
-
-    // vector<Intersection> i1 = {a1,a2};
-
-    // vector<vector<Intersection>> w = {i1};
-    // iSections.is = w;
-
-    // cout << "The lowest intersection object has a t value of: " << val.t << '\n';
-
-
-
-    // for (int x = 0; x < points.size(); x++){
-    //     cout << points[x] << '\n';
-    // }
-
-
-
+    
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);

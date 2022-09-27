@@ -9,20 +9,26 @@ class Sphere {
     private:
         int sphereID;
         Vector origin;
-        
+        Matrix transformation = Identity();
     public:
         Sphere(Vector origin = Vector(0,0,0,1)) {setSphereID();}
         int getSphereID();
         void setSphereID();
         void setOrigin(Vector origin);
         Vector getOrigin();
+
+        Matrix getTransformation() {
+            return this->transformation;
+        }
+        void setTransform(Matrix m){
+            this->transformation = m;
+        }
 };
 
 class Ray {
     private:    
         Vector origin;
         Vector direction;
-        friend Sphere;
     public:
         Ray(Vector origin, Vector direction) : origin(origin), direction(direction) {}
         Vector position(double t);
@@ -40,6 +46,11 @@ struct Intersection
         return t < a.t;
     }
 };
+template<class T>
+T setTransform(T object, Matrix m){
+    object.setTransformation(m);
+    return object;
+}
 
 template <class T>
 vector<T> aggregatePoints( std::initializer_list<T> list )
@@ -52,8 +63,13 @@ vector<T> aggregatePoints( std::initializer_list<T> list )
     return vInters;
 }
 
-Ray transform(Ray r1, Matrix r2){
-    
+Ray transform(Ray r1, Matrix m1){
+
+    Vector originTransform = m1 * r1.getOrigin();
+    Vector directionTransform = m1 * r1.getDirection();
+
+    Ray transformedRay = Ray(originTransform, directionTransform);
+    return transformedRay;
 }
 
 void Sphere::setOrigin(Vector origin)
@@ -96,7 +112,7 @@ vector<Intersection> Intersect(Sphere s, Ray r)
     Vector sphereOrigin = s.getOrigin();
     Vector rayDireciton = r.getDirection();
     
-    Vector sphereToRay = rayOrigin - sphereOrigin;
+    Vector sphereToRay = rayOrigin - Vector(0,0,0);
     double a = Vector::dot(rayDireciton, rayDireciton);
     double b = Vector::dot(r.getDirection(), sphereToRay) * 2;
 

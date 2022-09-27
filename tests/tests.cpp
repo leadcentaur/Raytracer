@@ -110,3 +110,75 @@
 //     //finally, move the teapot onto a table
 //     Matrix C = Translation(Vector(10,5,7,0));
 //     // teapot = C * Teapot
+// Ray rayA = Ray(Vector(0,0,0), Vector(0,0,1));
+//     vector<Intersection> ic1 = Intersect(s1, rayA);
+//     cout << "Intersections for Sphere " << ic1[0].sphere.getSphereID() << " are: " << ic1[0].t << "  and " << ic1[1].t << '\n';
+
+//     Ray rayB = Ray(Vector(0,0,-5), Vector(0,0,1));
+//     vector<Intersection> ic2 = Intersect(s1, rayB);
+//     cout << "Intersections for Sphere " << ic2[0].sphere.getSphereID() << " are: " << ic2[0].t << "  and " << ic2[1].t << '\n';
+
+//     //Each call to the intersection function returners two
+//     // or possibly one intersection record output as per ic1[0] and [1] index referencing.
+//     Ray rayC = Ray(Vector(0,0,-5), Vector(0,0,1));
+//     vector<Intersection> ic3 = Intersect(s1, rayC);
+
+//     Intersection i1 = ic1[0];
+//     i1.t = -1;
+
+//     Intersection i2 = ic1[1];
+//     i2.t = -1;
+    
+//      Intersection i3 = ic2[0];
+//     i3.t = -3;
+   
+//      Intersection i4 = ic2[1];
+//      i4.t = 2;
+
+//     vector<Intersection> results = aggregatePoints({i2, i1});
+
+//      cout << "Front: " << results.front().t << '\n';
+//      cout << "Back: " << results.back().t << "\n\n";
+
+//      for (auto x : results){
+//          cout << x.t << '\n';
+//      }
+
+//      Intersection val = hit(results);
+//      cout << "\nHit returned: " << val.t << "\n";
+
+//     //Translating a ray example
+//     Ray rx = Ray(Vector(1,2,3,1),Vector(0,1,0,0));
+//     Matrix tMatrix = Translation(Vector(3,4,5,0));
+//     Ray tForm = transform(rx, tMatrix);
+
+//     tForm.getDirection().print();
+//     tForm.getOrigin().print();
+
+//     //Scaling a ray example
+//     Ray ry = Ray(Vector(1,2,3,1), Vector(0,1,0,0));
+//     Matrix sMatrix = Scaling(Vector(2,3,4,0));
+//     Ray tf = transform(ry, sMatrix);
+
+//     tf.getDirection().print();
+//     tf.getOrigin().print();
+
+//     cout << "Direction: ";
+//     tForm.getDirection().print();
+//     cout << "Origin: ";
+//     tForm.getOrigin().print();
+
+//     cout << "The lowest result: " << results[0].t;
+
+//     vector<Intersection> i1 = {a1,a2};
+
+//     vector<vector<Intersection>> w = {i1};
+//     iSections.is = w;
+
+//     cout << "The lowest intersection object has a t value of: " << val.t << '\n';
+
+
+
+//     for (int x = 0; x < points.size(); x++){
+//         cout << points[x] << '\n';
+//     }
