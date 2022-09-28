@@ -182,3 +182,19 @@
 //     for (int x = 0; x < points.size(); x++){
 //         cout << points[x] << '\n';
 //     }
+
+
+// Translating a ray
+    // Sphere s1 = Sphere();
+    // Ray rx = Ray(Vector(0,0,-5,1), Vector(0,0,1,0));
+    // s1.setTransform(Scaling(Vector(2,2,2,1)));
+    // vector<Intersection> vInters= Intersect(s1, rx);
+    // cout << vInters[0].t;
+    // cout << vInters[1].t;
+
+    // Sphere s = Sphere();
+    // Ray r0 = Ray(Vector(0,0,-5,1),Vector(0,0,1,0));
+    // s.setTransform(Translation(Vector(5,0,0,1)));
+    // vector<Intersection> vInters = Intersect(s, r0);
+    // cout << vInters[0].t << '\n';
+    // cout << vInters[1].t;

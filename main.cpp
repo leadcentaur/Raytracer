@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <math.h>
 #include <stdio.h>
+#include <limits>
 #include <iostream>
 #include <iomanip>
 #include <map>
@@ -14,8 +15,9 @@
 #include <Windows.h>
 #include <stdio.h>
 
-#define SCREEN_WIDTH 1000
-#define SCREEN_HEIGHT 600
+#define SCREEN_WIDTH 100
+#define SCREEN_HEIGHT 100
+
 #define PI M_PI
 
 #define _USE_MATH_DEFINES
@@ -27,6 +29,8 @@ using namespace std::chrono;
 
 int main(int argc, char *argv[]){ 
 
+    int screen_width_half = int(SCREEN_WIDTH / 2);
+    int screen_height_half = int(SCREEN_HEIGHT / 2);
     auto start = high_resolution_clock::now();
 
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -60,28 +64,16 @@ int main(int argc, char *argv[]){
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 
+    //Draw the sphere
 
-    // Translating a ray
-    Sphere s1 = Sphere();
-    s1.getTransformation().print();
-    Ray rx = Ray(Vector(1,2,3,1), Vector(0,1,0,0));
-    Matrix tm = Translation(Vector(3,4,5,1));
-    Ray ra = transform(rx, tm);
-
-    cout << "Ra Origin: ";
-    ra.getOrigin().print();
-
-    cout << "Ra Directon: ";
-    ra.getDirection().print();
-    cout << '\n';
-
-    //Intersecting a ray with a sphere
-    Sphere s2 = Sphere();
-    Ray rp = Ray(Vector(0,0,5,1), Vector(0,0,1,0));
-    vector<Intersection> results = Intersect(s2, rp);
-    cout << results[1].t;
+    //start the ray at z = -5
+    Vector rayOrigin = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2, -5, 1);
+    SDL_RenderDrawPoint(renderer, screen_width_half, screen_height_half);
     
-    
+    //put the wall at z = 10
+    int wall_z = 10;
+    int wall_size = 7;
+    int pixel_size = wall_size / SCREEN_WIDTH;
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);

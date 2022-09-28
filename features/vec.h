@@ -29,12 +29,12 @@ class Vector {
 
         double dot(const Vector& a) 
         { 
-            return this->x * a.x + this->y * a.y + this->z * a.z + this->w * a.w; 
+            return double(this->x * a.x + this->y * a.y + this->z * a.z + this->w * a.w);
         }
 
         static double dot(const Vector& a, const Vector& b) 
         { 
-            return a.x * b.x + a.y * b.y + a.z * b.z + a.w * a.w; 
+            return double(a.x * b.x + a.y * b.y + a.z * b.z + a.w * a.w); 
         }
         
         inline void normalize() 
