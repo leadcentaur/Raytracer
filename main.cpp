@@ -73,7 +73,21 @@ int main(int argc, char *argv[]){
     //put the wall at z = 10
     int wall_z = 10;
     int wall_size = 7;
+    int half = SCREEN_WIDTH / 2;
     int pixel_size = wall_size / SCREEN_WIDTH;
+
+    Sphere sphere = Sphere();
+    for (int y = 0; y < SCREEN_WIDTH; y++){
+        int world_y = half - pixel_size * y;
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            int world_x = -half + pixel_size * x;
+            Vector position = Vector(world_x, world_y, wall_z);
+
+            Ray r = Ray(rayOrigin, (position - rayOrigin).normalize());
+            vector<Intersection> xs = Intersect(sphere, r);
+
+        }
+    }
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);

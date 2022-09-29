@@ -37,10 +37,11 @@ class Vector {
             return double(a.x * b.x + a.y * b.y + a.z * b.z + a.w * a.w); 
         }
         
-        inline void normalize() 
+        inline Vector normalize() 
         { 
             double ivm = 1 / this->magnitude(); 
-            this->x*ivm; this->y*ivm; this->z*ivm; this->w*ivm; 
+            this->x*ivm; this->y*ivm; this->z*ivm; this->w*ivm;
+            return *this;
         }
 
         inline void cross() 

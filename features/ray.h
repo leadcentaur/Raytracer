@@ -47,11 +47,6 @@ struct Intersection
     }
 };
 
-struct iSecthandler {
-    double discrimenant;
-    int std::numeric_limits<double>::quiet_NaN();
-};
-
 template<class T>
 T setTransform(T object, Matrix m){
     object.setTransformation(m);
@@ -124,7 +119,6 @@ vector<Intersection> Intersect(Sphere s, Ray r)
     double a = rayDireciton.dot(rayDireciton);
     double b = 2 * Vector::dot(rayDireciton, sphereToRay);
 
-    // I think the -1 needs ot be changed to the spehre radii
     double c = sphereToRay.dot(sphereToRay) - 1;
     double discriminant = pow(b,2) - 4 * a * c;
     if (discriminant > -1.0 && discriminant < 1.0){
@@ -132,7 +126,7 @@ vector<Intersection> Intersect(Sphere s, Ray r)
     }
     if (discriminant < 0) {
         cout << "The ray misses the sphere.";
-        return {}
+        return {};
     }
 
     double t1 = (-b - sqrt(discriminant)) / (2*a);
