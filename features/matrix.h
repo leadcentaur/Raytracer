@@ -71,7 +71,7 @@ Matrix Matrix::operator*(const Matrix &b) const {
     if (mCols != b.mRows) {
         throw invalid_argument("Cannot multiplty these matrices." );
     }
-    const int n = this->mRows; // a rows
+    const int n = this->mRows; 
     const int m = this->mCols;
     const int p = b.mCols;
 
@@ -123,11 +123,10 @@ static Matrix Translation(const Vector& v)
     Matrix translationMatrix = Identity();
     auto mData = translationMatrix.getData();
 
-    //! translation matrix unchanging
-    mData[0][3] = v.x; // { 1 0 0 x }
-    mData[1][3] = v.y; // { 0 1 0 y}
-    mData[2][3] = v.z; // { 0 0 1 z }
-    mData[3][3] = v.w; // { 0 0 0 1 }
+    mData[0][3] = v.x; 
+    mData[1][3] = v.y; 
+    mData[2][3] = v.z; 
+    mData[3][3] = v.w; 
 
     translationMatrix.setData(mData);
     return translationMatrix;
@@ -162,7 +161,6 @@ static Matrix Rotation(double radians, Axis rotation)
     default:
         break;
     }
-
     rotMatrix.setData(mData);
     return rotMatrix;
 }
@@ -173,7 +171,6 @@ static Matrix Scaling(const Vector& v)
     Matrix scalingMatrix = Identity(4,4,0);
     auto mData = scalingMatrix.getData();
 
-    //! scaling matrix unchanging
     mData[0][0] = v.x;  
     mData[1][1] = v.y;  
     mData[2][2] = v.z;  
@@ -231,11 +228,8 @@ double Matrix::Detriment()
     double determinent = 0;
     int ncols = this->nCols();
     int nrows = this->nRows();
-    
-    vector<vector<double>> data = this->getData();
-    // cout << "num rows: " << nrows << '\n';
-    // cout << "num rows: " << ncols << '\n';
 
+    vector<vector<double>> data = this->getData();
     if (ncols == 2 && nrows == 2) {
         return (data[0][0] * data[1][1]) - (data[1][0] * data[0][1]);
     } else {
@@ -283,26 +277,6 @@ void Matrix::print() const
         cout << "}\n";
     }
     cout << '\n';
-}
-
-string FPClass(double x)
-{
-    int i = _fpclass(x);
-    string s;
-    switch (i)
-    {
-        case _FPCLASS_SNAN: s = "Signaling NaN";                break;
-        case _FPCLASS_QNAN: s = "Quiet NaN";                    break; 
-        case _FPCLASS_NINF: s = "Negative infinity (-INF)";     break; 
-        case _FPCLASS_NN:   s = "Negative normalized non-zero"; break;
-        case _FPCLASS_ND:   s = "Negative denormalized";        break; 
-        case _FPCLASS_NZ:   s = "Negative zero (-0)";           break; 
-        case _FPCLASS_PZ:   s = "Positive 0 (+0)";              break; 
-        case _FPCLASS_PD:   s = "Positive denormalized";        break; 
-        case _FPCLASS_PN:   s = "Positive normalized non-zero"; break; 
-        case _FPCLASS_PINF: s = "Positive infinity (+INF)";     break;
-    }
-    return s;
 }
 
 #endif
