@@ -11,7 +11,10 @@ class Sphere {
         Vector origin;
         Matrix transformation = Identity();
     public:
-        Sphere(Vector origin = Vector(0,0,0,1)) {setSphereID();}
+        Sphere(Vector origin = Vector(0,0,0,1)) {
+            setSphereID();
+            this->origin = origin;    
+        }
         int getSphereID();
         void setSphereID();
         void setOrigin(Vector origin);
@@ -108,8 +111,14 @@ bool isEqual(double a, double b) {return std::abs(a - b) <= EPSILON * std::abs(a
 vector<Intersection> Intersect(Sphere s, Ray r)
 {   
     int sphereRadius = 1;
+    Intersection iSectA, iSectB;
+    iSectA.sphere = s, iSectB.sphere = s;
+
+    //This will indicate undefined 
+    iSectA.t = INT32_MIN;
+    iSectB.t = INT32_MIN;
+
     Ray tfr = transform(r, s.getTransformation().Inverse());
-    
     Vector rayOrigin = tfr.getOrigin();
     Vector rayDireciton = tfr.getDirection();
     Vector sphereOrigin = s.getOrigin();
@@ -125,14 +134,12 @@ vector<Intersection> Intersect(Sphere s, Ray r)
         discriminant = 0;
     }
     if (discriminant < 0) {
-        cout << "The ray misses the sphere.";
-        return {};
+        return vector<Intersection>{iSectA,iSectB};
     }
 
     double t1 = (-b - sqrt(discriminant)) / (2*a);
     double t2 = (-b + sqrt(discriminant)) / (2*a);
 
-    Intersection iSectA, iSectB;
     iSectA.sphere = s, iSectB.sphere = s;
     iSectA.t = t1, iSectB.t = t2;   
 

@@ -279,4 +279,15 @@ void Matrix::print() const
     cout << '\n';
 }
 
+Matrix TransvectionM(double Xy, double Xz, double Yx, double Yz, double Zx, double Zy)
+{   
+    Matrix transvectionMatrix = Identity(4,4);
+    auto mData = transvectionMatrix.getData();
+
+    m[0][0] = 1;
+
+
+    return m;
+}
+
 #endif

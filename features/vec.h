@@ -79,7 +79,7 @@ class Vector {
 
 double Vector::magnitude() { return sqrt((*this)*(*this)); }
 
-//! Transvection <--> Shearing
+
 Vector Vector::Transvection(double Xy, double Xz, double Yx, double Yz, double Zx, double Zy)
 {   
     auto x = this->x;
