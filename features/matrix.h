@@ -279,15 +279,26 @@ void Matrix::print() const
     cout << '\n';
 }
 
-Matrix TransvectionM(double Xy, double Xz, double Yx, double Yz, double Zx, double Zy)
+Matrix Shearing(double Xy, double Xz, double Yx, double Yz, double Zx, double Zy)
 {   
     Matrix transvectionMatrix = Identity(4,4);
     auto mData = transvectionMatrix.getData();
 
-    m[0][0] = 1;
+    mData[0][0] = 1;
+    mData[0][1] = Xy;
+    mData[0][2] = Xz;
+    mData[1][0] = Yx;
+    mData[1][1] = 1;
+    mData[1][2] = Yz;
+    mData[2][0] = Zx;
+    mData[2][1] = Zy;
+    mData[2][2] = 1;
+    mData[3][3] = 1;
 
+    transvectionMatrix.setData(mData);
+    transvectionMatrix.print();
 
-    return m;
+    return transvectionMatrix;
 }
 
 #endif

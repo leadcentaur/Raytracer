@@ -11,6 +11,7 @@
 #include "features/color.h"
 #include "features/matrix.h"
 #include "features/ray.h"
+
 #include "util/fpclass.h"
 #include <Windows.h>
 #include <stdio.h>
@@ -64,38 +65,49 @@ int main(int argc, char *argv[]){
     //start the ray at z = -5
     Sphere s = Sphere();
     Vector rayOrigin = Vector(0, 0, -5, 1);
+
+    // s.normal_at(Vector(1,0,0,1)).print();
+    // s.normal_at(Vector(0,1,0,1)).print();
+    // s.normal_at(Vector(0,0,1,1)).print();
+    // s.normal_at(Vector(sqrt(3)/3,sqrt(3)/3,sqrt(3)/3,1)).print();
+
+    Sphere s1 = Sphere();
+    s1.setTransform(Translation(Vector(0,1,0,1)));
+    s1.normal_at(Vector(0,1.70711,-0.70711,1)).print();
+
+    Sphere s2 = Sphere();
+    Matrix m = Scaling(Vector(1,0.5,1,1)) * Rotation(PI/5, Axis::RotZ);
+    s2.setTransform(m);
+    s2.normal_at(Vector(0,sqrt(2)/2,-sqrt(2)/2,1)).print();
+
     double wall_Z = 10;
-    double wall_size = 7.0;
+    double wall_size = 3.0;
     double pixel_size = wall_size / SCREEN_WIDTH;
     double half = wall_size / 2;
 
-    Vector m = Scaling(Vector(0.5,1,1,1)) * Vector(0,0,0,1);
+    // Matrix m = Shearing(1,0,0,0,0,0) * Scaling(Vector(0.5,1,1,1));
+    // s.setTransform(m);
+    // for (int y = 0; y <= SCREEN_WIDTH; y++) {
+    //     double world_y = half - pixel_size * y;
 
-    s.setTransform(m);
-    for (int y = 0; y <= SCREEN_WIDTH; y++) {
-        double world_y = half - pixel_size * y;
+    //     for (int x = 0; x  <= SCREEN_WIDTH; x++){
+    //         double world_x = -half + pixel_size * x;
+    //         Vector position = Vector(world_x, world_y, wall_Z);
+    //         Ray r = Ray(rayOrigin, (position-rayOrigin).normalize());
 
-        for (int x = 0; x  <= SCREEN_WIDTH; x++){
-            double world_x = -half + pixel_size * x;
-            Vector position = Vector(world_x, world_y, wall_Z);
-            Ray r = Ray(rayOrigin, (position-rayOrigin).normalize());
-
-            vector<Intersection> xs = Intersect(s, r);
-            if (hit(xs).t != INT32_MIN){
-                SDL_RenderDrawPoint(renderer, x, y);
-            }
-        }
-        cout << '\n';
-    }
+    //         vector<Intersection> xs = Intersect(s, r);
+    //         if (hit(xs).t != INT32_MIN){
+    //             SDL_RenderDrawPoint(renderer, x, y);
+    //         }
+    //     }
+    //     cout << '\n';
+    // }
     
-    //Re-test the hit function
-    Sphere s1 = Sphere();
-    s1.getOrigin().print();
 
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
-    SDL_SaveBMP(sshot, "clockface.bmp");
+    SDL_SaveBMP(sshot, "sphereSilhouette.bmp");
     SDL_FreeSurface(sshot);
     
     return 0;

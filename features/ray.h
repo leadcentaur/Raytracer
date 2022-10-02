@@ -26,6 +26,14 @@ class Sphere {
         void setTransform(Matrix m){
             this->transformation = m;
         }
+
+        Vector normal_at(Vector point){
+            Vector object_point = this->getTransformation().Inverse() * point;
+            Vector object_normal = object_point - Vector(0,0,0,1);
+            Vector world_normal = this->getTransformation().Inverse().Transpose() * object_normal;
+            world_normal.w = 0;
+            return world_normal;
+        }
 };
 
 class Ray {
@@ -145,6 +153,8 @@ vector<Intersection> Intersect(Sphere s, Ray r)
 
     return vector<Intersection>{iSectA,iSectB};
 }
+
+
 
 
 Intersection hit(vector<Intersection> vIntersects)
