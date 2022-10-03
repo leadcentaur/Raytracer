@@ -27,12 +27,12 @@ class Sphere {
             this->transformation = m;
         }
 
-        Vector normal_at(Vector point){
-            Vector object_point = this->getTransformation().Inverse() * point;
-            Vector object_normal = object_point - Vector(0,0,0,1);
-            Vector world_normal = this->getTransformation().Inverse().Transpose() * object_normal;
+        Vector normal_at(Vector world_point){
+            Vector object_point = this->getTransformation().Inverse() * world_point;
+            Vector object_normal = object_point - Vector(0,0,0);
+            Vector world_normal = (this->getTransformation().Inverse().Transpose() * object_normal);
             world_normal.w = 0;
-            return world_normal;
+            return world_normal.normalize();
         }
 };
 
@@ -114,6 +114,11 @@ int Sphere::getSphereID()
     return this->sphereID; 
 }
 
+Vector reflect(Vector in, Vector normal)
+{
+    return in - normal * 2 * in.dot(normal);
+}
+
 bool isEqual(double a, double b) {return std::abs(a - b) <= EPSILON * std::abs(a); }
 
 vector<Intersection> Intersect(Sphere s, Ray r)
@@ -153,9 +158,6 @@ vector<Intersection> Intersect(Sphere s, Ray r)
 
     return vector<Intersection>{iSectA,iSectB};
 }
-
-
-
 
 Intersection hit(vector<Intersection> vIntersects)
 {   

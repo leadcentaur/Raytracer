@@ -35,12 +35,6 @@ int Display::initDisplay() {
         return 1;
     }
 
-    /*
-        Need to flip the y vlaue from positive to negative,
-        this is because the origin starts at 0,0 which is in the top left of the screen.
-        there for to increases the height of the projectile we substract.
-    */
-
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 

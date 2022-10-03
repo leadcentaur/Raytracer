@@ -40,8 +40,7 @@ class Vector {
         inline Vector normalize() 
         { 
             double ivm = 1 / this->magnitude(); 
-            this->x*ivm; this->y*ivm; this->z*ivm; this->w*ivm;
-            return *this;
+            return Vector(this->x/this->magnitude(),this->y/this->magnitude(),this->z/this->magnitude(),this->w/this->magnitude());
         }
 
         inline void cross() 
