@@ -6,14 +6,10 @@ class Color {
         Color(float r=0.0, float g=0.0, float b=0.0) : r(r), g(g), b(b) {}
         
         Color& operator=(const Color& a);
-        //colors can be handled with four operations
         Color operator-(const Color& a) const;
         Color operator+(const Color& a) const;
-
         Color& operator-=(const Color& a);
         Color& operator+=(const Color& a);
-
-        //multiplication
         Color& operator*=(const float a);
         Color operator*(const float a) const;
         Color operator*(const Color& a) const;

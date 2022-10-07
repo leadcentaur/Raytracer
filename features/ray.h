@@ -1,3 +1,4 @@
+
 #ifndef _INCL_GUARD_RAY
 #define _INCL_GUARD_RAY
 
@@ -5,12 +6,20 @@
 
 using namespace std;
 
+struct Material {
+    double ambient;
+    double diffusel;
+    double specular;
+    double shininess;
+};
+
 class Sphere {
     private:
         int sphereID;
         Vector origin;
         Matrix transformation = Identity();
     public:
+        Material material = {1,2,3,4};
         Sphere(Vector origin = Vector(0,0,0,1)) {
             setSphereID();
             this->origin = origin;    
@@ -27,6 +36,14 @@ class Sphere {
             this->transformation = m;
         }
 
+        Material getMaterial(){
+            return this->material;
+        }
+
+        void setMaterial(Material material){
+            this->material = material;
+        }
+
         Vector normal_at(Vector world_point){
             Vector object_point = this->getTransformation().Inverse() * world_point;
             Vector object_normal = object_point - Vector(0,0,0);
@@ -34,6 +51,7 @@ class Sphere {
             world_normal.w = 0;
             return world_normal.normalize();
         }
+
 };
 
 class Ray {

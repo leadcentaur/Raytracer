@@ -117,7 +117,6 @@ Matrix Identity(int nRows = 4, int nCols = 4, int value = 0)
     return identity;
 }
 
-//! translation function - takes a vector (x,y,z,w)
 static Matrix Translation(const Vector& v)
 {
     Matrix translationMatrix = Identity();
@@ -132,7 +131,6 @@ static Matrix Translation(const Vector& v)
     return translationMatrix;
 }
 
-//! used to rotate a vector around the x axis
 static Matrix Rotation(double radians, Axis rotation)
 {
     Matrix rotMatrix = Identity();

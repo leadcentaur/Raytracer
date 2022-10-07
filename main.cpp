@@ -11,6 +11,7 @@
 #include "features/color.h"
 #include "features/matrix.h"
 #include "features/ray.h"
+#include "features/light.h"
 
 #include "util/fpclass.h"
 #include <Windows.h>
@@ -64,8 +65,9 @@ int main(int argc, char *argv[]){
 
     Sphere s1 = Sphere();
     reflect(Vector(0,-1,0), Vector(sqrt(2)/2,sqrt(2)/2,0)).print();
-
-    //s1.normal_at(Vector(0, sqrt(2)/2, -sqrt(2)/2)).print();
+    
+    s1.setMaterial({3,3,3,3});
+    cout << s1.material.ambient;
 
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);

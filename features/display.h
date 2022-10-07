@@ -14,7 +14,6 @@ class Display {
 
 int Display::initDisplay() {
 
-    // Initialize rendering with error handling
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
         printf("Error: SDL failed to initialize\nSDL Error: '%s'\n", SDL_GetError());
         std::cout << "Starting sdlc";
