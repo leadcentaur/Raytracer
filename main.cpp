@@ -64,7 +64,8 @@ int main(int argc, char *argv[]){
     //Draw the sphere
 
     Sphere s1 = Sphere();
-    reflect(Vector(0,-1,0), Vector(sqrt(2)/2,sqrt(2)/2,0)).print();
+    s1.setTransform(Translation(Vector(0,1,0,1)));
+    s1.normal_at(Vector(0,1.70711,-0.70711,1)).print();
     
     s1.setMaterial({3,3,3,3});
     cout << s1.material.ambient;

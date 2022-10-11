@@ -7,6 +7,7 @@
 using namespace std;
 
 struct Material {
+    Color color;
     double ambient;
     double diffusel;
     double specular;
