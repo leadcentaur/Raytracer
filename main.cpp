@@ -64,12 +64,12 @@ int main(int argc, char *argv[]){
     //Draw the sphere
 
     Sphere s1 = Sphere();
-    s1.setTransform(Translation(Vector(0,1,0,1)));
-    s1.normal_at(Vector(0,1.70711,-0.70711,1)).print();
-    
-    s1.setMaterial({3,3,3,3});
-    cout << s1.material.ambient;
 
+   Vector eyev = Vector(0,0,-1,0);
+   Vector normalv = Vector(0,0,-1,0);
+   Light light = Light(Vector(0,0,-10,1), Color(1,1,1)); 
+   Color result = lighting(s1.getMaterial(), s1.getOrigin(), light, eyev, normalv);
+   result.print();
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);

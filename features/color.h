@@ -68,4 +68,19 @@ Color Color::operator*(const Color& a) const {
     return res;
 }
 
+Color Color::operator+(const Color& a) const {
+    Color res(*this);
+    res+=a;
+
+    return res;
+}
+
+Color Color::operator-(const Color& a) const { 
+    Color res(*this);
+    res-=a;
+
+    return res;
+}
+
+
 

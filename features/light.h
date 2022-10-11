@@ -42,6 +42,7 @@ Vector Light::getPosition()
 
 Color lighting(Material m, Vector point, Light light_source, Vector eye, Vector normal){
     Color intensity = light_source.getIntensity();
+
     Color diffuse;
     Color specular;
 
@@ -49,7 +50,7 @@ Color lighting(Material m, Vector point, Light light_source, Vector eye, Vector 
     Vector light_v = (light_source.getPosition() -  point).normalize();
     Color ambient = effective_color * m.ambient;
 
-    int light_dot_normal = Vector::dot(light_v, normal);
+    double light_dot_normal = Vector::dot(light_v, normal);
 
     if (light_dot_normal < 0){
         Color diffuse = Color(0,0,0);
@@ -58,9 +59,8 @@ Color lighting(Material m, Vector point, Light light_source, Vector eye, Vector 
         Color diffuse = effective_color * m.diffusel * light_dot_normal;
     }
 
-    //Will need a function that sets light v to negative
-    Vector reflectv = reflect(light_v, normal);
-    int reflect_dot_eye = Vector::dot(reflectv, eye);
+    Vector reflectv = reflect(Vector(-light_v.x, -light_v.y, -light_v.z, -light_v.w), normal);
+    double reflect_dot_eye = Vector::dot(reflectv, eye);
     if (reflect_dot_eye <= 0){
         Color specular = Color(0,0,0);
     } else {
