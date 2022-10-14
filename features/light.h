@@ -9,11 +9,9 @@ class Light {
         Vector positon;
     public:
         
-        Light(Vector p, Color i) : intensity(i), positon(p) {}
+        Light(Vector positon, Color intensity) : positon(positon), intensity(intensity) {}
 
         void setIntensity(Color intensity);
-
-
         Color getIntensity();
 
         void setPosition(Vector position);
@@ -40,35 +38,30 @@ Vector Light::getPosition()
     return this->positon;
 }
 
-Color lighting(Material m, Vector point, Light light_source, Vector eye, Vector normal){
-    Color intensity = light_source.getIntensity();
-
+Color lighting(Material m, Light light, Vector point, Vector eyev, Vector normalv){
     Color diffuse;
     Color specular;
+    Color intensity = light.getIntensity();
+    Vector position = light.getPosition();
 
-    Color effective_color = intensity * m.color;
-    Vector light_v = (light_source.getPosition() -  point).normalize();
+    Color effective_color = m.color * intensity;
+    Vector lightv = (position - point).normalize();
     Color ambient = effective_color * m.ambient;
-
-    double light_dot_normal = Vector::dot(light_v, normal);
-
+    double light_dot_normal = Vector::dot(lightv, normalv);
     if (light_dot_normal < 0){
-        Color diffuse = Color(0,0,0);
-        Color specular = Color(0,0,0);
+        diffuse = Color(1,1,1);
+        specular = Color(1,1,1);
     } else {
-        Color diffuse = effective_color * m.diffusel * light_dot_normal;
+        diffuse = effective_color * m.diffuse * light_dot_normal;
+        Vector reflectv = reflect(Vector(-lightv.x, -lightv.y, -lightv.z, lightv.w), normalv);
+        double reflect_dot_eye = Vector::dot(reflectv, eyev);
+        if(reflect_dot_eye <= 0){
+            specular = Color(1,1,1);
+        } else {
+            double factor = std::pow(reflect_dot_eye, m.shininess);
+            specular = light.getIntensity() * m.specular * factor;
+        }
     }
-
-    Vector reflectv = reflect(Vector(-light_v.x, -light_v.y, -light_v.z, -light_v.w), normal);
-    double reflect_dot_eye = Vector::dot(reflectv, eye);
-    if (reflect_dot_eye <= 0){
-        Color specular = Color(0,0,0);
-    } else {
-        double factor = std::pow(reflect_dot_eye, m.shininess);
-        Color intensity = light_source.getIntensity();
-        Color specular = intensity * m.specular * factor;
-    }
-
     return ambient + diffuse + specular;
 }
 

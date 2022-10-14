@@ -67,9 +67,12 @@ int main(int argc, char *argv[]){
 
    Vector eyev = Vector(0,0,-1,0);
    Vector normalv = Vector(0,0,-1,0);
-   Light light = Light(Vector(0,0,-10,1), Color(1,1,1)); 
-   Color result = lighting(s1.getMaterial(), s1.getOrigin(), light, eyev, normalv);
-   result.print();
+   Light light = Light(Vector(0,10,-10,1), Color(1,1,1)); 
+   Vector position = Vector(0,0,0,1);
+   Material m = s1.getMaterial();
+
+   Color result = lighting(m, light, position, eyev, normalv);
+    result.print();
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);

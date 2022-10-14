@@ -7,9 +7,9 @@
 using namespace std;
 
 struct Material {
-    Color color;
+    Color color = Color(1,1,1);
     double ambient;
-    double diffusel;
+    double diffuse;
     double specular;
     double shininess;
 };
@@ -20,7 +20,7 @@ class Sphere {
         Vector origin;
         Matrix transformation = Identity();
     public:
-        Material material = {1,2,3,4};
+        Material material = {Color(1,1,1), 0.1,0.9,0.9,200};
         Sphere(Vector origin = Vector(0,0,0,1)) {
             setSphereID();
             this->origin = origin;    
