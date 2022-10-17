@@ -1,4 +1,5 @@
 
+
 #ifndef _INCL_GUARD_LIGHT
 #define _INCL_GUARD_LIGHT
 
@@ -45,9 +46,10 @@ Color lighting(Material m, Light light, Vector point, Vector eyev, Vector normal
     Vector position = light.getPosition();
 
     Color effective_color = m.color * intensity;
-    Vector lightv = (position - point).normalize();
+    Vector lightv = Vector::normalize(position - point);
     Color ambient = effective_color * m.ambient;
     double light_dot_normal = Vector::dot(lightv, normalv);
+
     if (light_dot_normal < 0){
         diffuse = Color(1,1,1);
         specular = Color(1,1,1);

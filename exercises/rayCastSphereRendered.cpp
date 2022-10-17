@@ -11,7 +11,6 @@
 #include "features/color.h"
 #include "features/matrix.h"
 #include "features/ray.h"
-#include "features/light.h"
 
 #include "util/fpclass.h"
 #include <Windows.h>
@@ -63,19 +62,40 @@ int main(int argc, char *argv[]){
     SDL_RenderDrawPoint(renderer,0,0);
     //Draw the sphere
 
+    //start the ray at z = -5
+    Sphere s = Sphere();
+    Vector rayOrigin = Vector(0, 0, -5, 1);
+    double wall_Z = 10;
+    double wall_size = 3.0;
+    double pixel_size = wall_size / screen_width_half;
+    double half = wall_size / 2;
+
+    // Matrix m = Shearing(1,0,0,0,0,0) * Scaling(Vector(0.5,1,1,1));
+    // s.setTransform(m);
+    for (int y = 0; y <= screen_width_half; y++) {
+        double world_y = half - pixel_size * y;
+
+        for (int x = 0; x  <= screen_height_half; x++){
+            double world_x = -half + pixel_size * x;
+            Vector position = Vector(world_x, world_y, wall_Z);
+            Ray r = Ray(rayOrigin, (position-rayOrigin).normalize());
+
+            vector<Intersection> xs = Intersect(s, r);
+            if (hit(xs).t != INT32_MIN){
+                SDL_RenderDrawPoint(renderer, x, y);
+            }
+        }
+        cout << '\n';
+    }
+    
+    //Re-test the hit function
     Sphere s1 = Sphere();
+    s1.getOrigin().print();
 
-   Vector eyev = Vector(0,0,-1,0);
-   Vector normalv = Vector(0,0,-1,0);
-   Light light = Light(Vector(0,10,-10,1), Color(1,1,1)); 
-   Vector position = Vector(0,0,0,1);
-
-   Color result = lighting(s1.getMaterial(), light, position, eyev, normalv);
-    result.print();
 
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_WIDTH, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
-    SDL_SaveBMP(sshot, "sphereSilhouette.bmp");
+    SDL_SaveBMP(sshot, "clockface.bmp");
     SDL_FreeSurface(sshot);
     
     return 0;
